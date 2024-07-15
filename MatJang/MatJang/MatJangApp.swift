@@ -11,14 +11,16 @@ import KakaoSDKCommon
 
 @main
 struct MatJangApp: App {
+    let kakaoNativeAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] as? String ?? ""
+
     init(){
-        KakaoSDK.initSDK(appKey: ${KAKAO_NATIVE_APP_KEY})
+        KakaoSDK.initSDK(appKey: kakaoNativeAppKey)
     }
     var body: some Scene {
         
         
         WindowGroup {
-            ContentView()
+            LoginView()
         }
     }
 }

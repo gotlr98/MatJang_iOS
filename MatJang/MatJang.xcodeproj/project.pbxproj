@@ -50,7 +50,6 @@
 		8AF3B6DC2C44FD19007A954C = {
 			isa = PBXGroup;
 			children = (
-				8AF3B7082C4500A9007A954C /* Config.xcconfig */,
 				8AF3B6E72C44FD19007A954C /* MatJang */,
 				8AF3B6E62C44FD19007A954C /* Products */,
 			);
@@ -67,6 +66,7 @@
 		8AF3B6E72C44FD19007A954C /* MatJang */ = {
 			isa = PBXGroup;
 			children = (
+				8AF3B7082C4500A9007A954C /* Config.xcconfig */,
 				8AF3B7072C44FF67007A954C /* Info.plist */,
 				8AF3B6F92C44FE39007A954C /* Model */,
 				8AF3B6F82C44FE2D007A954C /* ViewController */,
@@ -201,6 +201,7 @@
 /* Begin XCBuildConfiguration section */
 		8AF3B6F22C44FD1A007A954C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8AF3B7082C4500A9007A954C /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -262,6 +263,7 @@
 		};
 		8AF3B6F32C44FD1A007A954C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8AF3B7082C4500A9007A954C /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
