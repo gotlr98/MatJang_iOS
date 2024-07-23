@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct MainMap: View {
+    @State var draw: Bool = false
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        KakaoMapView(draw: $draw).onAppear(perform: {
+            self.draw = true
+        }).onDisappear(perform: {
+            self.draw = false
+        }).frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
-#Preview {
-    MainMap()
-}
+//#Preview {
+//    MainMap()
+//}

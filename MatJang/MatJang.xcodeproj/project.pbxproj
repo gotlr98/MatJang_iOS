@@ -10,6 +10,7 @@
 		8A16B6FD2C4608C10063B187 /* JWTDecode in Frameworks */ = {isa = PBXBuildFile; productRef = 8A16B6FC2C4608C10063B187 /* JWTDecode */; };
 		8A16B6FF2C46170B0063B187 /* MainMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A16B6FE2C46170B0063B187 /* MainMap.swift */; };
 		8A16B7022C4634430063B187 /* KakaoMapsSDK-SPM in Frameworks */ = {isa = PBXBuildFile; productRef = 8A16B7012C4634430063B187 /* KakaoMapsSDK-SPM */; };
+		8AA8134C2C4F619000916A5A /* KakaoMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA8134B2C4F619000916A5A /* KakaoMapView.swift */; };
 		8AF3B6E92C44FD19007A954C /* MatJangApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3B6E82C44FD19007A954C /* MatJangApp.swift */; };
 		8AF3B6EB2C44FD19007A954C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3B6EA2C44FD19007A954C /* ContentView.swift */; };
 		8AF3B6ED2C44FD1A007A954C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AF3B6EC2C44FD1A007A954C /* Assets.xcassets */; };
@@ -24,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		8A16B6FE2C46170B0063B187 /* MainMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMap.swift; sourceTree = "<group>"; };
+		8AA8134B2C4F619000916A5A /* KakaoMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoMapView.swift; sourceTree = "<group>"; };
 		8AF3B6E52C44FD19007A954C /* MatJang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MatJang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AF3B6E82C44FD19007A954C /* MatJangApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatJangApp.swift; sourceTree = "<group>"; };
 		8AF3B6EA2C44FD19007A954C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -53,6 +55,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8AA8134D2C4F620A00916A5A /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
 		8AF3B6DC2C44FD19007A954C = {
 			isa = PBXGroup;
 			children = (
@@ -72,6 +81,7 @@
 		8AF3B6E72C44FD19007A954C /* MatJang */ = {
 			isa = PBXGroup;
 			children = (
+				8AA8134D2C4F620A00916A5A /* Helper */,
 				8AF3B7082C4500A9007A954C /* Config.xcconfig */,
 				8AF3B7072C44FF67007A954C /* Info.plist */,
 				8AF3B6F92C44FE39007A954C /* Model */,
@@ -99,6 +109,7 @@
 			children = (
 				8AF3B6FA2C44FE4F007A954C /* LoginView.swift */,
 				8A16B6FE2C46170B0063B187 /* MainMap.swift */,
+				8AA8134B2C4F619000916A5A /* KakaoMapView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -203,6 +214,7 @@
 			files = (
 				8AF3B6FB2C44FE4F007A954C /* LoginView.swift in Sources */,
 				8AF3B6EB2C44FD19007A954C /* ContentView.swift in Sources */,
+				8AA8134C2C4F619000916A5A /* KakaoMapView.swift in Sources */,
 				8AF3B6E92C44FD19007A954C /* MatJangApp.swift in Sources */,
 				8A16B6FF2C46170B0063B187 /* MainMap.swift in Sources */,
 			);
