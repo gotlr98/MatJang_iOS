@@ -15,12 +15,12 @@ import JWTDecode
 
 struct LoginView: View{
     
-    @State var isAppleSignIn: Bool = false
-    @State var isKakaoSignIn: Bool = false
+    @State var isSignIn: Bool = false
+//    @State var isKakaoSignIn: Bool = false
     var body: some View{
         NavigationView {
             VStack {
-                NavigationLink(destination: MainMap(), isActive: $isKakaoSignIn, label:{
+                NavigationLink(destination: MainMap(), isActive: $isSignIn, label:{
                     Button {
                         if (UserApi.isKakaoTalkLoginAvailable()) {
                         UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
@@ -28,7 +28,7 @@ struct LoginView: View{
                                 print(error)
                             }
                             else{
-                                isKakaoSignIn = true
+                                isSignIn = true
                             }
                         }
                     } else {
@@ -37,7 +37,7 @@ struct LoginView: View{
                                     print(error)
                                 }
                                 else{
-                                    isKakaoSignIn = true
+                                    isSignIn = true
                                 }
                             }
                         }
@@ -48,7 +48,6 @@ struct LoginView: View{
                 }
                 
                 })
-                NavigationLink(destination: MainMap(), isActive: $isAppleSignIn){
                     SignInWithAppleButton(onRequest: {request in
                         request.requestedScopes = [.fullName, .email]
                     }, onCompletion: {result in
@@ -72,14 +71,14 @@ struct LoginView: View{
                                             let jwt = try decode(jwt: identityTokenString)
                                             let decodedBody = jwt.body as Dictionary<String, Any>
                                             print("Decoded email: "+(decodedBody["email"] as? String ?? "n/a")   )
-                                            isAppleSignIn = true
+                                            isSignIn = true
                                         } catch {
                                             print("decoding failed")
                                         }}
                                 }
                                 else{
                                     print("email:" + email)
-                                    isAppleSignIn = true
+                                    isSignIn = true
                                 }
                                 
                                 
@@ -93,7 +92,6 @@ struct LoginView: View{
                     })
                     .frame(width : UIScreen.main.bounds.width * 0.9, height:50)
                     .cornerRadius(5)
-                }
                 
                 
             }
