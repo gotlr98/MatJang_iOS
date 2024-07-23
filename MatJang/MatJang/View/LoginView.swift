@@ -102,12 +102,6 @@ struct LoginView: View{
     }
 }
 
-//struct SignInWithApple: View{
-//    @State var isActive: Bool = false
-//    var body: some View{
-//        
-//    }
-//}
 
 #Preview{
     LoginView()
