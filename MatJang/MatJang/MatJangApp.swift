@@ -34,7 +34,7 @@ struct MatJangApp: App {
         
         
         WindowGroup {
-            LoginView()
+            MainMap()
         }
     }
 }

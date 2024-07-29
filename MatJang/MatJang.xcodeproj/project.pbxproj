@@ -13,6 +13,7 @@
 		8AA8134C2C4F619000916A5A /* KakaoMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA8134B2C4F619000916A5A /* KakaoMapView.swift */; };
 		8AA813512C4F62AA00916A5A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AA813502C4F62A900916A5A /* GoogleService-Info.plist */; };
 		8AA813542C4F634C00916A5A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 8AA813532C4F634C00916A5A /* FirebaseAnalytics */; };
+		8AA813562C4F880C00916A5A /* SideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA813552C4F880C00916A5A /* SideMenuView.swift */; };
 		8AF3B6E92C44FD19007A954C /* MatJangApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3B6E82C44FD19007A954C /* MatJangApp.swift */; };
 		8AF3B6EB2C44FD19007A954C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3B6EA2C44FD19007A954C /* ContentView.swift */; };
 		8AF3B6ED2C44FD1A007A954C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AF3B6EC2C44FD1A007A954C /* Assets.xcassets */; };
@@ -29,6 +30,7 @@
 		8A16B6FE2C46170B0063B187 /* MainMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMap.swift; sourceTree = "<group>"; };
 		8AA8134B2C4F619000916A5A /* KakaoMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoMapView.swift; sourceTree = "<group>"; };
 		8AA813502C4F62A900916A5A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8AA813552C4F880C00916A5A /* SideMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuView.swift; sourceTree = "<group>"; };
 		8AF3B6E52C44FD19007A954C /* MatJang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MatJang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AF3B6E82C44FD19007A954C /* MatJangApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatJangApp.swift; sourceTree = "<group>"; };
 		8AF3B6EA2C44FD19007A954C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 				8AF3B6FA2C44FE4F007A954C /* LoginView.swift */,
 				8A16B6FE2C46170B0063B187 /* MainMap.swift */,
 				8AA8134B2C4F619000916A5A /* KakaoMapView.swift */,
+				8AA813552C4F880C00916A5A /* SideMenuView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -220,6 +223,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AA813562C4F880C00916A5A /* SideMenuView.swift in Sources */,
 				8AF3B6FB2C44FE4F007A954C /* LoginView.swift in Sources */,
 				8AF3B6EB2C44FD19007A954C /* ContentView.swift in Sources */,
 				8AA8134C2C4F619000916A5A /* KakaoMapView.swift in Sources */,
