@@ -17,10 +17,11 @@
 		8A64FF552C5745E300CAD716 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8A64FF542C5745E300CAD716 /* FirebaseAnalyticsSwift */; };
 		8A64FF572C5745E300CAD716 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 8A64FF562C5745E300CAD716 /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		8A64FF592C5745E300CAD716 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 8A64FF582C5745E300CAD716 /* FirebaseAppCheck */; };
-		8A64FF5C2C57488200CAD716 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A64FF5B2C57488200CAD716 /* GoogleService-Info.plist */; };
 		8A64FF632C57491400CAD716 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 8A64FF622C57491400CAD716 /* KakaoSDK */; };
 		8A64FF652C57491400CAD716 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 8A64FF642C57491400CAD716 /* KakaoSDKAuth */; };
 		8A64FF672C5755F600CAD716 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A64FF662C5755F600CAD716 /* SignInView.swift */; };
+		8AD626DC2C58BCA900FFC8BD /* JWTDecode in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD626DB2C58BCA900FFC8BD /* JWTDecode */; };
+		8AD626DE2C58C2D400FFC8BD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AD626DD2C58C2D400FFC8BD /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,8 +33,9 @@
 		8A64FF472C57452700CAD716 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8A64FF492C57452700CAD716 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A64FF5A2C5747D000CAD716 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
-		8A64FF5B2C57488200CAD716 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8A64FF662C5755F600CAD716 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		8A80273C2C58ABE600C1FEC0 /* MatJang_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MatJang_iOS.entitlements; sourceTree = "<group>"; };
+		8AD626DD2C58C2D400FFC8BD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Downloads/matjang_ios/GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +45,7 @@
 			files = (
 				8A64FF652C57491400CAD716 /* KakaoSDKAuth in Frameworks */,
 				8A64FF552C5745E300CAD716 /* FirebaseAnalyticsSwift in Frameworks */,
+				8AD626DC2C58BCA900FFC8BD /* JWTDecode in Frameworks */,
 				8A64FF512C5745E300CAD716 /* FirebaseAnalytics in Frameworks */,
 				8A64FF532C5745E300CAD716 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
 				8A64FF592C5745E300CAD716 /* FirebaseAppCheck in Frameworks */,
@@ -73,6 +76,7 @@
 		8A64FF3A2C57452600CAD716 /* MatJang_iOS */ = {
 			isa = PBXGroup;
 			children = (
+				8A80273C2C58ABE600C1FEC0 /* MatJang_iOS.entitlements */,
 				8A64FF602C57489B00CAD716 /* Controller */,
 				8A64FF5F2C57489700CAD716 /* Model */,
 				8A64FF5E2C57489200CAD716 /* View */,
@@ -91,7 +95,7 @@
 		8A64FF5D2C57488E00CAD716 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				8A64FF5B2C57488200CAD716 /* GoogleService-Info.plist */,
+				8AD626DD2C58C2D400FFC8BD /* GoogleService-Info.plist */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -142,6 +146,7 @@
 				8A64FF582C5745E300CAD716 /* FirebaseAppCheck */,
 				8A64FF622C57491400CAD716 /* KakaoSDK */,
 				8A64FF642C57491400CAD716 /* KakaoSDKAuth */,
+				8AD626DB2C58BCA900FFC8BD /* JWTDecode */,
 			);
 			productName = MatJang_iOS;
 			productReference = 8A64FF382C57452600CAD716 /* MatJang_iOS.app */;
@@ -174,6 +179,7 @@
 			packageReferences = (
 				8A64FF4F2C5745E300CAD716 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				8A64FF612C57491400CAD716 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				8AD626DA2C58BCA900FFC8BD /* XCRemoteSwiftPackageReference "JWTDecode.swift" */,
 			);
 			productRefGroup = 8A64FF392C57452600CAD716 /* Products */;
 			projectDirPath = "";
@@ -190,8 +196,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A64FF452C57452700CAD716 /* Assets.xcassets in Resources */,
-				8A64FF5C2C57488200CAD716 /* GoogleService-Info.plist in Resources */,
 				8A64FF482C57452700CAD716 /* Base in Resources */,
+				8AD626DE2C58C2D400FFC8BD /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,6 +355,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MatJang_iOS/MatJang_iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = JNYZF4BBNC;
@@ -363,7 +370,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "sik.MatJang-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.matjang.iOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -380,6 +387,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MatJang_iOS/MatJang_iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = JNYZF4BBNC;
@@ -394,7 +402,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "sik.MatJang-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.matjang.iOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -446,6 +454,14 @@
 				minimumVersion = 2.22.5;
 			};
 		};
+		8AD626DA2C58BCA900FFC8BD /* XCRemoteSwiftPackageReference "JWTDecode.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/auth0/JWTDecode.swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -483,6 +499,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8A64FF612C57491400CAD716 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDKAuth;
+		};
+		8AD626DB2C58BCA900FFC8BD /* JWTDecode */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8AD626DA2C58BCA900FFC8BD /* XCRemoteSwiftPackageReference "JWTDecode.swift" */;
+			productName = JWTDecode;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

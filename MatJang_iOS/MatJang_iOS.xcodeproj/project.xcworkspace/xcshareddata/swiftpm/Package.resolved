@@ -1,5 +1,5 @@
 {
-  "originHash" : "3c0196a0861bedd6a846bc0509c3076f248bb8b4daf8cdcdc79e5ecc5fb9fda8",
+  "originHash" : "f9d937d9a6e2267ea3dbe21d33dc2c2adfb743e76c8529aba76b608e679e22f1",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -89,6 +89,15 @@
       "state" : {
         "revision" : "2d12673670417654f08f5f90fdd62926dc3a2648",
         "version" : "100.0.0"
+      }
+    },
+    {
+      "identity" : "jwtdecode.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/auth0/JWTDecode.swift.git",
+      "state" : {
+        "revision" : "58af7278797871e460d79496621b3e5366b865b2",
+        "version" : "3.1.0"
       }
     },
     {
