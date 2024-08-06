@@ -14,7 +14,7 @@ import JWTDecode
 class SignInView: UIViewController{
     
     let kakaoButton = UIButton()
-    let appleButton = UIButton()
+    let appleButton = ASAuthorizationAppleIDButton(type: .signIn, style: .black)
 //    let kakaoLabel = UILabel()
     
     @objc func onPressKakaoButton(_sender: UIButton){
@@ -53,10 +53,12 @@ class SignInView: UIViewController{
         
         kakaoButton.translatesAutoresizingMaskIntoConstraints = false
         kakaoButton.addTarget(self, action: #selector(onPressKakaoButton), for: .touchUpInside)
-        kakaoButton.setTitle("카카오 로그인", for: <#T##UIControl.State#>)
+        kakaoButton.setTitle("카카오 로그인", for: .normal)
+        kakaoButton.setImage(UIImage(named: "kakao_login_medium_narrow"), for: .normal)
         
         appleButton.translatesAutoresizingMaskIntoConstraints = false
         appleButton.addTarget(self, action: #selector(onPressAppleButton), for: .touchUpInside)
+
         
         NSLayoutConstraint.activate([
             kakaoButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
