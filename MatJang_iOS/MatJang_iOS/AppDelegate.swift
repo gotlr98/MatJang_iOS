@@ -9,6 +9,7 @@ import UIKit
 import FirebaseCore
 import KakaoSDKCommon
 import KakaoSDKAuth
+import KakaoMapsSDK
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let kakaoNativeAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] as? String ?? ""
         FirebaseApp.configure()
         KakaoSDK.initSDK(appKey: kakaoNativeAppKey)
+        SDKInitializer.InitSDK(appKey: kakaoNativeAppKey)
 
         return true
     }
