@@ -29,7 +29,7 @@ class SignInView: UIViewController{
                     _ = oauthToken
                     
                     guard let nextVC = self.storyboard?.instantiateViewController(identifier: "MainMapVC") else {return}
-                    self.present(nextVC, animated: false, completion: nil)
+                    self.navigationController?.pushViewController(nextVC, animated: false)
                 }
             }
         }
@@ -48,7 +48,7 @@ class SignInView: UIViewController{
 //                        self.present(mainVC, animated: false)
                         
                         guard let nextVC = self.storyboard?.instantiateViewController(identifier: "MainMapVC") else {return}
-                        self.present(nextVC, animated: false, completion: nil)
+                        self.navigationController?.pushViewController(nextVC, animated: false)
                     }
                 }
         }
@@ -120,10 +120,10 @@ extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControll
                             print("decoding failed")
                         }
                     }
-//                    let mainVC = MainMap(nibName: nil, bundle: nil)
-//                    mainVC.modalPresentationStyle = .fullScreen
-//                    self.present(mainVC, animated: false)
-                    return
+                    guard let nextVC = self.storyboard?.instantiateViewController(identifier: "MainMapVC") else {return}
+                    self.navigationController?.pushViewController(nextVC, animated: false)
+                    
+                return
  
                 case let passwordCredential as ASPasswordCredential:
                     // Sign in using an existing iCloud Keychain credential.
@@ -133,9 +133,9 @@ extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControll
                     print("username: \(username)")
                     print("password: \(password)")
                     
-//                    let mainVC = MainMap(nibName: nil, bundle: nil)
-//                    mainVC.modalPresentationStyle = .fullScreen
-//                    self.present(mainVC, animated: false)
+                    guard let nextVC = self.storyboard?.instantiateViewController(identifier: "MainMapVC") else {return}
+                    self.navigationController?.pushViewController(nextVC, animated: false)
+                
                     return
                 
                 default:

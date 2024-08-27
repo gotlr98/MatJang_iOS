@@ -38,6 +38,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         
         super.viewDidLoad()
         mapContainer = self.view as? KMViewContainer
+        self.navigationItem.hidesBackButton = true
         
         //KMController 생성.
         mapController = KMController(viewContainer: mapContainer!)
@@ -116,7 +117,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         //여기에서 그릴 View(KakaoMap, Roadview)들을 추가한다.
         let defaultPosition: MapPoint = MapPoint(longitude: 127.108678, latitude: 37.402001)
         //지도(KakaoMap)를 그리기 위한 viewInfo를 생성
-        let mapviewInfo: MapviewInfo = MapviewInfo(viewName: "mapview", viewInfoName: "map", defaultPosition: defaultPosition, defaultLevel: 7)
+        let mapviewInfo: MapviewInfo = MapviewInfo(viewName: "mapview", viewInfoName: "map", defaultPosition: defaultPosition, defaultLevel: 15)
         
         //KakaoMap 추가.
         mapController?.addView(mapviewInfo)
@@ -124,6 +125,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
     
     func viewInit(viewName: String) {
         print("OK")
+
     }
     
     //addView 성공 이벤트 delegate. 추가적으로 수행할 작업을 진행한다.
@@ -187,6 +189,8 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
                                         toastLabel.removeFromSuperview()
                                     })
     }
+    
+    
     
     var mapContainer: KMViewContainer?
     var mapController: KMController?
