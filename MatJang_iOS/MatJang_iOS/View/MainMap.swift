@@ -28,6 +28,7 @@ class MainMap: MainMapViewController {
     
     func createLabelLayer() {
         let view = mapController?.getView("mapview") as! KakaoMap
+        
         let manager = view.getLabelManager()    //LabelManager를 가져온다. LabelLayer는 LabelManger를 통해 추가할 수 있다.
         
         // 추가할 레이어의 옵션을 지정한다. 옵션에는 레이어에 속할 Label(POI)들의 경쟁방식, 레이어의 zOrder등의 속성을 지정할 수 있다.
@@ -49,7 +50,7 @@ class MainMap: MainMapViewController {
         let manager = view.getLabelManager()
         // 심볼을 지정.
         // 심볼의 anchor point(심볼이 배치될때의 위치 기준점)를 지정. 심볼의 좌상단을 기준으로 한 % 값.
-        let iconStyle = PoiIconStyle(symbol: UIImage(named: "mapIcoBookmark_01.png"), anchorPoint: CGPoint(x: 0.0, y: 0.5))
+        let iconStyle = PoiIconStyle(symbol: UIImage(named: "marker.png"), anchorPoint: CGPoint(x: 0.0, y: 0.5))
         let perLevelStyle = PerLevelPoiStyle(iconStyle: iconStyle, level: 0)  // 이 스타일이 적용되기 시작할 레벨.
         let poiStyle = PoiStyle(styleID: "customStyle1", styles: [perLevelStyle])
         manager.addPoiStyle(poiStyle)
@@ -58,6 +59,7 @@ class MainMap: MainMapViewController {
     // POI를 생성한다.
     func createPois() {
         let view = mapController?.getView("mapview") as! KakaoMap
+        
         let manager = view.getLabelManager()
         let layer = manager.getLabelLayer(layerID: "PoiLayer")   // 생성한 POI를 추가할 레이어를 가져온다.
         let poiOption = PoiOptions(styleID: "customStyle1") // 생성할 POI의 Option을 지정하기 위한 자료를 담는 클래스를 생성. 사용할 스타일의 ID를 지정한다.
@@ -74,7 +76,22 @@ class MainMap: MainMapViewController {
     
     // POI 탭 이벤트가 발생하고, 표시하고 있던 Poi를 숨긴다.
     func poiTappedHandler(_ param: PoiInteractionEventParam) {
-        param.poiItem.hide()
+//        param.poiItem.hide()
+        print("poi Tapped!")
     }
     
+}
+
+extension UIImageView {
+    func load(url: URL) {
+        DispatchQueue.global().async { [weak self] in
+            if let data = try? Data(contentsOf: url) {
+                if let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        self?.image = image
+                    }
+                }
+            }
+        }
+    }
 }
