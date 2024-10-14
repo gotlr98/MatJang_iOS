@@ -12,7 +12,7 @@ import SideMenu
 
 class MainMap: MainMapViewController {
     
-    
+    var emailString: String?
     
     override func addViews() {
         let defaultPosition: MapPoint = MapPoint(longitude: 127.108678, latitude: 37.402001)
@@ -85,19 +85,4 @@ class MainMap: MainMapViewController {
     }
     
 }
-
-//extension UIImageView {
-//    func load(url: URL) {
-//        DispatchQueue.global().async { [weak self] in
-//            if let data = try? Data(contentsOf: url) {
-//                if let image = UIImage(data: data) {
-//                    DispatchQueue.main.async {
-//                        self?.image = image
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
-
 

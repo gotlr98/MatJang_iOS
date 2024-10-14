@@ -11,12 +11,18 @@ import KakaoSDKUser
 import AuthenticationServices
 import JWTDecode
 
+protocol UserModelDelegate{
+    func sendUserInfo(user: UserModel)
+}
+
 class SignInView: UIViewController{
     
     let kakaoButton = UIButton()
     let appleButton = ASAuthorizationAppleIDButton(type: .signIn, style: .black)
+    var sendUserModel: UserModelDelegate?
     
     @objc func onPressKakaoButton(_sender: UIButton){
+
         if (UserApi.isKakaoTalkLoginAvailable()) {
             UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
                 if let error = error {
@@ -26,10 +32,22 @@ class SignInView: UIViewController{
                     print("loginWithKakaoTalk() success.")
 
                     //do something
-                    _ = oauthToken
+                    var token = oauthToken
                     
-                    guard let nextVC = self.storyboard?.instantiateViewController(identifier: "MainMapVC") else {return}
-                    self.navigationController?.pushViewController(nextVC, animated: false)
+                    UserApi.shared.me(){(user, error) in
+                        if let error = error{}
+                        else{
+                            var email = user?.kakaoAccount?.email
+//                            self.sendUserModel?.sendUserInfo(user: UserModel(email: email ?? "" , socialType: SocialType.Kakao))
+                            let vc = UIStoryboard(name: "MainMapVC", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
+                            
+                            vc.emailTest = email
+                            self.navigationController?.pushViewController(vc, animated: false)
+                        }
+                    }
+
+                   
+                    
                 }
             }
         }
@@ -47,14 +65,29 @@ class SignInView: UIViewController{
 //                        mainVC.modalPresentationStyle = .fullScreen
 //                        self.present(mainVC, animated: false)
                         
-                        guard let nextVC = self.storyboard?.instantiateViewController(identifier: "MainMapVC") else {return}
-                        self.navigationController?.pushViewController(nextVC, animated: false)
+                        UserApi.shared.me(){(user, error) in
+                            if let error = error{}
+                            else{
+                                var email = user?.kakaoAccount?.email
+    //                            self.sendUserModel?.sendUserInfo(user: UserModel(email: email ?? "" , socialType: SocialType.Kakao))
+                                let vc = UIStoryboard(name: "MainMapVC", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
+                                
+                                vc.emailTest = email
+                                self.navigationController?.pushViewController(vc, animated: false)
+                            }
+                        }
+                        
+//                        self.sendUserModel?.sendUserInfo(user: UserModel(email: "", socialType: SocialType.Kakao))
+//                        guard let nextVC = self.storyboard?.instantiateViewController(identifier: "MainMapVC") else {return}
+//                        self.navigationController?.pushViewController(nextVC, animated: false)
                     }
                 }
         }
     }
     
     override func viewDidLoad(){
+        
+//        self.viewDidLoad()
         
         self.view.addSubview(kakaoButton)
         self.view.addSubview(appleButton)
@@ -81,7 +114,11 @@ class SignInView: UIViewController{
         
         
     }
+    
+
 }
+
+
 
 extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding{
     
@@ -116,10 +153,13 @@ extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControll
                             let decodedBody = jwt.body as Dictionary<String, Any>
                             print(decodedBody)
                             print("Decoded email: "+(decodedBody["email"] as? String ?? "n/a")   )
+                            self.sendUserModel?.sendUserInfo(user: UserModel(email: decodedBody["email"] as? String ?? "", socialType: SocialType.Apple))
                         } catch {
                             print("decoding failed")
                         }
                     }
+                
+                    
                     guard let nextVC = self.storyboard?.instantiateViewController(identifier: "MainMapVC") else {return}
                     self.navigationController?.pushViewController(nextVC, animated: false)
                     

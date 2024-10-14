@@ -15,6 +15,8 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
     
     private var sideMenuVC = SideMenuVC()
     private var dimmingView: UIView?
+    var emailTest: String?
+    var socialType: SocialType?
     
     private lazy var sideMenuButton = UIImageView().then{
         $0.image = UIImage(systemName: "text.justify")
@@ -25,10 +27,21 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         $0.isUserInteractionEnabled = true
     }
     
+//    func sendUserInfo(user: UserModel) {
+//        self.email = user.email
+//        self.socialType = user.socialType
+//        
+//        print(self.email)
+//        print("email here")
+//        
+//    }
+    
     required init?(coder aDecoder: NSCoder) {
         _observerAdded = false
         _auth = false
         _appear = false
+        let signInVC = SignInView()
+//        signInVC.delegate = self
         super.init(coder: aDecoder)
     }
     
@@ -59,6 +72,8 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: sideMenuButton)
         
         addDimmingView()
+        
+//        let signInVC = storyboard?.instantiateViewController(identifier: "SignInView") as! SignInView
         
 //        let menu = SideMenuNavigationController(rootViewController: MainMapViewController)
 

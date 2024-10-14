@@ -25,6 +25,7 @@
 		8A6EA4DD2C63176800B34147 /* MainMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6EA4DC2C63176800B34147 /* MainMap.swift */; };
 		8AA04E1A2CB78ADC00BECCCB /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA04E192CB78ADC00BECCCB /* UserModel.swift */; };
 		8AA04E1C2CB78D3700BECCCB /* Matjip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA04E1B2CB78D3700BECCCB /* Matjip.swift */; };
+		8AA04E1E2CB793EA00BECCCB /* UserModelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA04E1D2CB793EA00BECCCB /* UserModelDelegate.swift */; };
 		8AC647552C61DC740071C420 /* MainMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC647542C61DC740071C420 /* MainMapVC.swift */; };
 		8AC647582C61E7CB0071C420 /* KakaoMapsSDK-SPM in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC647572C61E7CB0071C420 /* KakaoMapsSDK-SPM */; };
 		8AD626DC2C58BCA900FFC8BD /* JWTDecode in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD626DB2C58BCA900FFC8BD /* JWTDecode */; };
@@ -48,6 +49,7 @@
 		8A80273C2C58ABE600C1FEC0 /* MatJang_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MatJang_iOS.entitlements; sourceTree = "<group>"; };
 		8AA04E192CB78ADC00BECCCB /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		8AA04E1B2CB78D3700BECCCB /* Matjip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matjip.swift; sourceTree = "<group>"; };
+		8AA04E1D2CB793EA00BECCCB /* UserModelDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModelDelegate.swift; sourceTree = "<group>"; };
 		8AC647542C61DC740071C420 /* MainMapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapVC.swift; sourceTree = "<group>"; };
 		8AD626DD2C58C2D400FFC8BD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Downloads/matjang_ios/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8AF12D362CB4ED0000C99888 /* SideMenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuVC.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 		8AA04E182CB78ACB00BECCCB /* Delegate */ = {
 			isa = PBXGroup;
 			children = (
+				8AA04E1D2CB793EA00BECCCB /* UserModelDelegate.swift */,
 			);
 			path = Delegate;
 			sourceTree = "<group>";
@@ -248,6 +251,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AC647552C61DC740071C420 /* MainMapVC.swift in Sources */,
+				8AA04E1E2CB793EA00BECCCB /* UserModelDelegate.swift in Sources */,
 				8A64FF402C57452600CAD716 /* ViewController.swift in Sources */,
 				8AA04E1A2CB78ADC00BECCCB /* UserModel.swift in Sources */,
 				8AF12D372CB4ED0000C99888 /* SideMenuVC.swift in Sources */,

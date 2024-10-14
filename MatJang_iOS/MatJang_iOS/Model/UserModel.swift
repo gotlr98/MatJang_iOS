@@ -12,7 +12,7 @@ enum SocialType: String{
     case Kakao, Apple, Guest
 }
 
-private struct UserModel{
+public struct UserModel{
     
     var email: String
     var socialType: SocialType = .Guest
