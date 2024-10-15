@@ -72,10 +72,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: sideMenuButton)
         
         addDimmingView()
-        
-//        let signInVC = storyboard?.instantiateViewController(identifier: "SignInView") as! SignInView
-        
-//        let menu = SideMenuNavigationController(rootViewController: MainMapViewController)
+
 
         
         //KMController 생성.
