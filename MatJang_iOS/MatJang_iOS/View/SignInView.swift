@@ -38,8 +38,9 @@ class SignInView: UIViewController{
                         if let error = error{}
                         else{
                             var email = user?.kakaoAccount?.email
-//                            self.sendUserModel?.sendUserInfo(user: UserModel(email: email ?? "" , socialType: SocialType.Kakao))
-                            let vc = UIStoryboard(name: "MainMapVC", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
+                            print("\(email) email here")
+                            //                            self.sendUserModel?.sendUserInfo(user: UserModel(email: email ?? "" , socialType: SocialType.Kakao))
+                            let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
                             
                             vc.emailTest = email
                             self.navigationController?.pushViewController(vc, animated: false)
@@ -70,7 +71,8 @@ class SignInView: UIViewController{
                             else{
                                 var email = user?.kakaoAccount?.email
     //                            self.sendUserModel?.sendUserInfo(user: UserModel(email: email ?? "" , socialType: SocialType.Kakao))
-                                let vc = UIStoryboard(name: "MainMapVC", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
+                                print("\(email) email here")
+                                let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
                                 
                                 vc.emailTest = email
                                 self.navigationController?.pushViewController(vc, animated: false)
@@ -153,15 +155,18 @@ extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControll
                             let decodedBody = jwt.body as Dictionary<String, Any>
                             print(decodedBody)
                             print("Decoded email: "+(decodedBody["email"] as? String ?? "n/a")   )
-                            self.sendUserModel?.sendUserInfo(user: UserModel(email: decodedBody["email"] as? String ?? "", socialType: SocialType.Apple))
+//                            self.sendUserModel?.sendUserInfo(user: UserModel(email: decodedBody["email"] as? String ?? "", socialType: SocialType.Apple))
+                            let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
+                            
+                            vc.emailTest = decodedBody["email"] as? String ?? "n/a"
+                            self.navigationController?.pushViewController(vc, animated: false)
                         } catch {
                             print("decoding failed")
                         }
                     }
                 
                     
-                    guard let nextVC = self.storyboard?.instantiateViewController(identifier: "MainMapVC") else {return}
-                    self.navigationController?.pushViewController(nextVC, animated: false)
+                        
                     
                 return
  
@@ -173,8 +178,10 @@ extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControll
                     print("username: \(username)")
                     print("password: \(password)")
                     
-                    guard let nextVC = self.storyboard?.instantiateViewController(identifier: "MainMapVC") else {return}
-                    self.navigationController?.pushViewController(nextVC, animated: false)
+                    let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
+                    
+                    vc.emailTest = username
+                    self.navigationController?.pushViewController(vc, animated: false)
                 
                     return
                 

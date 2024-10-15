@@ -81,6 +81,9 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         //KMController 생성.
         mapController = KMController(viewContainer: mapContainer!)
         mapController!.delegate = self
+        
+        print("\(emailTest) email here main vc")
+        
     }
     
     private func addDimmingView() {
