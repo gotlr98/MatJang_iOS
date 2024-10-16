@@ -27,6 +27,14 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         $0.isUserInteractionEnabled = true
     }
     
+    private lazy var testButton = UIImageView().then{
+        $0.image = UIImage(systemName: "figure.run")
+        $0.tintColor = .black
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(getMatJipFromAPI))
+        $0.addGestureRecognizer(tap)
+        $0.isUserInteractionEnabled = true
+    }
 //    func sendUserInfo(user: UserModel) {
 //        self.email = user.email
 //        self.socialType = user.socialType
@@ -72,14 +80,18 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: sideMenuButton)
         
         addDimmingView()
-
+        
+        
+        view.addSubview(testButton)
+        testButton.translatesAutoresizingMaskIntoConstraints = false
+        testButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        testButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 40).isActive = true
 
         
         //KMController 생성.
         mapController = KMController(viewContainer: mapContainer!)
         mapController!.delegate = self
         
-        print("\(emailTest) email here main vc")
         
     }
     
@@ -287,6 +299,45 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
                        completion: { (finished) in
                                         toastLabel.removeFromSuperview()
                                     })
+    }
+    
+    @objc func getMatJipFromAPI(){
+        var urlComponents = URLComponents()
+        urlComponents.scheme = "https"
+        urlComponents.host = "dapi.kakao.com"
+        urlComponents.path = "/v2/local/search/category.json?category\\_group\\"
+        urlComponents.queryItems = [
+            URLQueryItem(name: "_code", value: "FD6"),
+            URLQueryItem(name: "radius", value: "20000")
+        ]
+        
+//        if let url = urlComponents.url {
+//            print("URL: \(url)")
+//        }
+        
+        var tes = "https://dapi.kakao.com/v2/local/search/category.json?category\\_group\\_code=FD6&radius=20000"
+        
+        var request = URLRequest(url: urlComponents.url!)
+        request.httpMethod = "GET"
+        request.setValue("Kakao AK \(Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] as? String ?? "")", forHTTPHeaderField: "Authorization")
+        
+        let task = URLSession.shared.dataTask(with: request){ data, response, error in
+            if let error = error{
+                print(error)
+            }
+            else if let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200{
+                do{
+                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]{
+                        print(json)
+                    }
+                }catch{
+                    print("error")
+                }
+            }else{
+                print("error")
+            }
+        }
+        
     }
     
     
