@@ -302,41 +302,49 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
     }
     
     @objc func getMatJipFromAPI(){
-        var urlComponents = URLComponents()
-        urlComponents.scheme = "https"
-        urlComponents.host = "dapi.kakao.com"
-        urlComponents.path = "/v2/local/search/category.json?category\\_group\\"
-        urlComponents.queryItems = [
-            URLQueryItem(name: "_code", value: "FD6"),
-            URLQueryItem(name: "radius", value: "20000")
-        ]
         
-//        if let url = urlComponents.url {
-//            print("URL: \(url)")
-//        }
+        var components = URLComponents(string: "https://dapi.kakao.com/v2/local/search/category.json?")
+                //도메인 뒤에 API 주소 삽입
+        //파라미터 추가할거 있으면 작성
+        let parameters = [URLQueryItem(name: "category_group_code", value: "FD6"),
+                          URLQueryItem(name: "x", value: "127.108678"),
+                          URLQueryItem(name: "y", value: "37.402001"),
+                          URLQueryItem(name: "radius", value: "10000")]
+        components?.percentEncodedQueryItems = parameters
+        //URL 생성
+        guard let url = components?.url else { return }
+        print(url)
         
-        var tes = "https://dapi.kakao.com/v2/local/search/category.json?category\\_group\\_code=FD6&radius=20000"
-        
-        var request = URLRequest(url: urlComponents.url!)
+        var request: URLRequest = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.setValue("Kakao AK \(Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] as? String ?? "")", forHTTPHeaderField: "Authorization")
+        request.setValue(Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] as? String ?? "", forHTTPHeaderField: "Authorization: KakaoAK")
         
         let task = URLSession.shared.dataTask(with: request){ data, response, error in
-            if let error = error{
-                print(error)
+            guard error == nil else{
+                print("\(error) error calling Get")
+                return
             }
-            else if let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200{
-                do{
-                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]{
-                        print(json)
-                    }
-                }catch{
-                    print("error")
-                }
-            }else{
-                print("error")
+            
+            guard let data = data else{
+                print("did not receive data")
+                return
             }
+            
+            guard let response = response as? HTTPURLResponse, (200 ..< 300) ~= response.statusCode else{
+                print("HTTP request fail")
+                return
+            }
+            
+//            guard let output = try? JSONDecoder().decode(response.self, from: data) else{
+//                print("JSON data decode fail")
+//                return
+//            }
+            
+            print(response.statusCode)
+            
+            
         }
+        task.resume()
         
     }
     
