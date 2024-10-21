@@ -303,7 +303,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
     
     @objc func getMatJipFromAPI(){
         
-        var components = URLComponents(string: "https://dapi.kakao.com/v2/local/search/category.json?")
+        var components = URLComponents(string: "https://dapi.kakao.com/v2/local/search/category.json")
                 //도메인 뒤에 API 주소 삽입
         //파라미터 추가할거 있으면 작성
         let parameters = [URLQueryItem(name: "category_group_code", value: "FD6"),
@@ -317,7 +317,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         
         var request: URLRequest = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.setValue(Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] as? String ?? "", forHTTPHeaderField: "Authorization: KakaoAK")
+        request.setValue("KakaoAK \(Bundle.main.infoDictionary?["KAKAO_REST_API_KEY"] as? String ?? "")", forHTTPHeaderField: "Authorization")
         
         let task = URLSession.shared.dataTask(with: request){ data, response, error in
             guard error == nil else{
@@ -330,8 +330,15 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
                 return
             }
             
-            guard let response = response as? HTTPURLResponse, (200 ..< 300) ~= response.statusCode else{
+            print(data)
+            
+            
+            guard let httpresponse = response as? HTTPURLResponse, (200 ..< 300) ~= httpresponse.statusCode else{
                 print("HTTP request fail")
+                if let httpresponse = response as? HTTPURLResponse{
+                    print(httpresponse.statusCode)
+                    print(httpresponse)
+                }
                 return
             }
             
@@ -340,7 +347,6 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
 //                return
 //            }
             
-            print(response.statusCode)
             
             
         }
