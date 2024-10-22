@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A2801972CC7618D004C8FA4 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8A2801962CC7618D004C8FA4 /* Alamofire */; };
+		8A2801992CC7618D004C8FA4 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 8A2801982CC7618D004C8FA4 /* AlamofireDynamic */; };
 		8A30F4342C647C520005E60B /* main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A30F4332C647C520005E60B /* main.storyboard */; };
 		8A5E589B2CAD15C100E86F86 /* SideMenu in Frameworks */ = {isa = PBXBuildFile; productRef = 8A5E589A2CAD15C100E86F86 /* SideMenu */; };
 		8A64FF3C2C57452600CAD716 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A64FF3B2C57452600CAD716 /* AppDelegate.swift */; };
@@ -70,7 +72,9 @@
 				8A64FF532C5745E300CAD716 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
 				8AC647582C61E7CB0071C420 /* KakaoMapsSDK-SPM in Frameworks */,
 				8A64FF592C5745E300CAD716 /* FirebaseAppCheck in Frameworks */,
+				8A2801992CC7618D004C8FA4 /* AlamofireDynamic in Frameworks */,
 				8A64FF572C5745E300CAD716 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				8A2801972CC7618D004C8FA4 /* Alamofire in Frameworks */,
 				8A5E589B2CAD15C100E86F86 /* SideMenu in Frameworks */,
 				8A64FF632C57491400CAD716 /* KakaoSDK in Frameworks */,
 			);
@@ -188,6 +192,8 @@
 				8AC647572C61E7CB0071C420 /* KakaoMapsSDK-SPM */,
 				8A5E589A2CAD15C100E86F86 /* SideMenu */,
 				8AF12D392CB4F3E300C99888 /* Then */,
+				8A2801962CC7618D004C8FA4 /* Alamofire */,
+				8A2801982CC7618D004C8FA4 /* AlamofireDynamic */,
 			);
 			productName = MatJang_iOS;
 			productReference = 8A64FF382C57452600CAD716 /* MatJang_iOS.app */;
@@ -224,6 +230,7 @@
 				8AC647562C61E7CA0071C420 /* XCRemoteSwiftPackageReference "KakaoMapsSDK-SPM" */,
 				8A5E58992CAD15C100E86F86 /* XCRemoteSwiftPackageReference "SideMenu" */,
 				8AF12D382CB4F3E300C99888 /* XCRemoteSwiftPackageReference "Then" */,
+				8A2801952CC7618D004C8FA4 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 8A64FF392C57452600CAD716 /* Products */;
 			projectDirPath = "";
@@ -490,6 +497,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		8A2801952CC7618D004C8FA4 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.1;
+			};
+		};
 		8A5E58992CAD15C100E86F86 /* XCRemoteSwiftPackageReference "SideMenu" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/jonkykong/SideMenu.git";
@@ -541,6 +556,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8A2801962CC7618D004C8FA4 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A2801952CC7618D004C8FA4 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		8A2801982CC7618D004C8FA4 /* AlamofireDynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A2801952CC7618D004C8FA4 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = AlamofireDynamic;
+		};
 		8A5E589A2CAD15C100E86F86 /* SideMenu */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8A5E58992CAD15C100E86F86 /* XCRemoteSwiftPackageReference "SideMenu" */;

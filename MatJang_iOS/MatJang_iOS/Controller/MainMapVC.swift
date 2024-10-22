@@ -10,6 +10,7 @@ import UIKit
 import KakaoMapsSDK
 import SideMenu
 import Then
+import Alamofire
 
 class MainMapViewController: UIViewController, MapControllerDelegate{
     
@@ -303,54 +304,25 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
     
     @objc func getMatJipFromAPI(){
         
-        var components = URLComponents(string: "https://dapi.kakao.com/v2/local/search/category.json")
-                //도메인 뒤에 API 주소 삽입
-        //파라미터 추가할거 있으면 작성
-        let parameters = [URLQueryItem(name: "category_group_code", value: "FD6"),
-                          URLQueryItem(name: "x", value: "127.108678"),
-                          URLQueryItem(name: "y", value: "37.402001"),
-                          URLQueryItem(name: "radius", value: "10000")]
-        components?.percentEncodedQueryItems = parameters
-        //URL 생성
-        guard let url = components?.url else { return }
-        print(url)
         
-        var request: URLRequest = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("KakaoAK \(Bundle.main.infoDictionary?["KAKAO_REST_API_KEY"] as? String ?? "")", forHTTPHeaderField: "Authorization")
-        
-        let task = URLSession.shared.dataTask(with: request){ data, response, error in
-            guard error == nil else{
-                print("\(error) error calling Get")
-                return
-            }
-            
-            guard let data = data else{
-                print("did not receive data")
-                return
-            }
-            
-            print(data)
-            
-            
-            guard let httpresponse = response as? HTTPURLResponse, (200 ..< 300) ~= httpresponse.statusCode else{
-                print("HTTP request fail")
-                if let httpresponse = response as? HTTPURLResponse{
-                    print(httpresponse.statusCode)
-                    print(httpresponse)
+        let url = "https://dapi.kakao.com/v2/local/search/category.json"
+        let parameters = ["category_group_code": "FD6", "x": "127.10.8678", "y": "37.402001", "radius": "10000"]
+        let headers: HTTPHeaders = ["Authorization": "KakaoAK \(Bundle.main.infoDictionary?["KAKAO_REST_API_KEY"] as? String ?? "")"]
+        AF.request(url, method: .get, parameters: parameters, headers: headers)
+            .validate(statusCode: 200..<300)
+            .responseJSON{response in
+                switch response.result{
+                case .success(let data):
+                    do{
+                        print(data)
+                    }
+                    break
+                case .failure(let error):
+                    print(error)
+                    break
+
                 }
-                return
             }
-            
-//            guard let output = try? JSONDecoder().decode(response.self, from: data) else{
-//                print("JSON data decode fail")
-//                return
-//            }
-            
-            
-            
-        }
-        task.resume()
         
     }
     

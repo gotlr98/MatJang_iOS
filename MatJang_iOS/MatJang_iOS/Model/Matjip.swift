@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-public struct Matjip{
+public struct Matjip: Decodable{
     
     var place_name: String?
     var x: String?
