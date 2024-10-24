@@ -8,11 +8,16 @@
 import Foundation
 import UIKit
 
-public struct Matjip: Decodable{
+public struct MatjipList: Codable{
+    
+    var matjipList: [Matjip]
+}
+public struct Matjip: Codable{
     
     var place_name: String?
     var x: String?
     var y: String?
-    var address: String?
-    var category: String?
+    var address_name: String?
+    var category_name: String?
+    
 }

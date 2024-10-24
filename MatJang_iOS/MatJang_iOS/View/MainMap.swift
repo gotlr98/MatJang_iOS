@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 import KakaoMapsSDK
-import SideMenu
 
 class MainMap: MainMapViewController {
     

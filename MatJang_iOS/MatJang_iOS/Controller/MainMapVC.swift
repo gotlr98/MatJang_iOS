@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 import KakaoMapsSDK
-import SideMenu
 import Then
 import Alamofire
 
@@ -306,15 +305,27 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         
         
         let url = "https://dapi.kakao.com/v2/local/search/category.json"
-        let parameters = ["category_group_code": "FD6", "x": "127.10.8678", "y": "37.402001", "radius": "10000"]
+        let parameters = ["category_group_code": "FD6", "x": "127.108678", "y": "37.402001", "radius": "10000"]
         let headers: HTTPHeaders = ["Authorization": "KakaoAK \(Bundle.main.infoDictionary?["KAKAO_REST_API_KEY"] as? String ?? "")"]
         AF.request(url, method: .get, parameters: parameters, headers: headers)
-            .validate(statusCode: 200..<300)
+            .validate(statusCode: 200..<500)
             .responseJSON{response in
                 switch response.result{
                 case .success(let data):
                     do{
-                        print(data)
+                        let value = [data]
+                        for val in value{
+                            if let obj = val as? [String: Any]{
+                                if let convData = obj["documents"] as? [[String:String]]{
+                                    for name in convData{
+                                        print(name["place_name"])
+                                    }
+                                }
+                                
+                            }
+                        }
+//                        print(data)
+                        
                     }
                     break
                 case .failure(let error):
