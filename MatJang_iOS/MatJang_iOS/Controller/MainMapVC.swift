@@ -35,14 +35,23 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         $0.addGestureRecognizer(tap)
         $0.isUserInteractionEnabled = true
     }
-//    func sendUserInfo(user: UserModel) {
-//        self.email = user.email
-//        self.socialType = user.socialType
-//        
-//        print(self.email)
-//        print("email here")
-//        
-//    }
+    
+    private lazy var searchButton = UIImageView().then{
+        $0.image = UIImage(systemName: "magnifyingglass")
+        $0.tintColor = .black
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(searchMatJipFromAPI))
+        $0.addGestureRecognizer(tap)
+        $0.isUserInteractionEnabled = true
+    }
+    
+    private lazy var searchField = UITextField().then{
+        $0.placeholder = "검색어를 입력하세요"
+        $0.rightView = searchButton
+        $0.spellCheckingType = .no
+        $0.borderStyle = .line
+    }
+
     
     required init?(coder aDecoder: NSCoder) {
         _observerAdded = false
@@ -53,13 +62,6 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         super.init(coder: aDecoder)
     }
     
-//    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-//        _observerAdded = false
-//        _auth = false
-//        _appear = false
-//        super.init(nibName: nil, bundle: nil)
-//    }
-
 
     
     deinit {
@@ -86,6 +88,17 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         testButton.translatesAutoresizingMaskIntoConstraints = false
         testButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         testButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 40).isActive = true
+        
+        
+        view.addSubview(searchField)
+        searchField.translatesAutoresizingMaskIntoConstraints = false
+        searchField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        searchField.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70).isActive = true
+        
+        view.addSubview(searchButton)
+        searchButton.translatesAutoresizingMaskIntoConstraints = false
+        searchButton.leftAnchor.constraint(equalTo: searchField.rightAnchor, constant: 30).isActive = true
+        searchButton.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70).isActive = true
 
         
         //KMController 생성.
@@ -303,7 +316,6 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
     
     @objc func getMatJipFromAPI(){
         
-        
         let url = "https://dapi.kakao.com/v2/local/search/category.json"
         let parameters = ["category_group_code": "FD6", "x": "127.108678", "y": "37.402001", "radius": "10000"]
         let headers: HTTPHeaders = ["Authorization": "KakaoAK \(Bundle.main.infoDictionary?["KAKAO_REST_API_KEY"] as? String ?? "")"]
@@ -335,6 +347,49 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
                 }
             }
         
+    }
+    
+    @objc func searchMatJipFromAPI(){
+        
+        print("button clicked")
+        
+        if searchField.text != "" {
+            let query = searchField.text
+            let url = "https://dapi.kakao.com/v2/local/search/keyword.json"
+            let parameters = ["query": query, "category_group_code": "FD6", "x": "127.108678", "y": "37.402001", "radius": "10000"]
+            let headers: HTTPHeaders = ["Authorization": "KakaoAK \(Bundle.main.infoDictionary?["KAKAO_REST_API_KEY"] as? String ?? "")"]
+            AF.request(url, method: .get, parameters: parameters, headers: headers)
+                .validate(statusCode: 200..<500)
+                .responseJSON{response in
+                    switch response.result{
+                    case .success(let data):
+                        do{
+                            let value = [data]
+                            for val in value{
+                                if let obj = val as? [String: Any]{
+                                    if let convData = obj["documents"] as? [[String:String]]{
+                                        for name in convData{
+                                            print(name["place_name"])
+                                            print(name["road_address_name"])
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                        }
+                        break
+                    case .failure(let error):
+                        print(error)
+                        break
+
+                    }
+                }
+        }
+        else{
+            let alert = UIAlertController(title: "Error",message: "검색어를 입력해주세요", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Close", style: .destructive))
+            self.present(alert, animated: false)
+        }
     }
     
     
