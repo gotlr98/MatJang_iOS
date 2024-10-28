@@ -17,6 +17,8 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
     private var dimmingView: UIView?
     var emailTest: String?
     var socialType: SocialType?
+    var searchMatjipList: [Matjip] = []
+    var categoryMatjipList: [Matjip] = []
     
     private lazy var sideMenuButton = UIImageView().then{
         $0.image = UIImage(systemName: "text.justify")
@@ -249,6 +251,10 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
     
     func viewInit(viewName: String) {
         print("OK")
+        
+        let mapView = mapController?.getView("mapview") as! KakaoMap
+        _cameraStoppedHandler = mapView.addCameraStoppedEventHandler(target: self, handler: MainMapViewController.onCameraStopped)
+
 
     }
     
@@ -329,15 +335,13 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
                         for val in value{
                             if let obj = val as? [String: Any]{
                                 if let convData = obj["documents"] as? [[String:String]]{
-                                    for name in convData{
-                                        print(name["place_name"])
+                                    for temp in convData{
+                                        self.categoryMatjipList.append(Matjip(place_name: temp["place_name"], x: temp["x"], y: temp["y"], address_name: temp["road_address_name"], category_name: temp["category_name"]))
                                     }
                                 }
                                 
                             }
                         }
-//                        print(data)
-                        
                     }
                     break
                 case .failure(let error):
@@ -350,9 +354,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
     }
     
     @objc func searchMatJipFromAPI(){
-        
-        print("button clicked")
-        
+                
         if searchField.text != "" {
             let query = searchField.text
             let url = "https://dapi.kakao.com/v2/local/search/keyword.json"
@@ -368,9 +370,8 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
                             for val in value{
                                 if let obj = val as? [String: Any]{
                                     if let convData = obj["documents"] as? [[String:String]]{
-                                        for name in convData{
-                                            print(name["place_name"])
-                                            print(name["road_address_name"])
+                                        for temp in convData{
+                                            self.searchMatjipList.append(Matjip(place_name: temp["place_name"], x: temp["x"], y: temp["y"], address_name: temp["road_address_name"], category_name: temp["category_name"]))
                                         }
                                     }
                                     
@@ -392,6 +393,22 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         }
     }
     
+    func onCameraStopped(_ param: CameraActionEventParam) {
+        if(param.by == .pan)
+            {
+                let mapView = param.view as! KakaoMap
+                let position = mapView.getPosition(CGPoint(x: 0.5, y: 0.5))
+                
+                position.wgsCoord.latitude
+                
+                print("CurrentPosition:\(position.wgsCoord.latitude), \(position.wgsCoord.longitude)")
+                
+                // handler를 dispose한다.
+//                _cameraStoppedHandler?.dispose()
+            }
+        }
+    
+    var _cameraStoppedHandler: DisposableEventHandler?
     
     
     var mapContainer: KMViewContainer?
