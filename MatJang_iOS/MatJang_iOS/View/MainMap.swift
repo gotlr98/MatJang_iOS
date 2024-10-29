@@ -23,6 +23,9 @@ class MainMap: MainMapViewController {
     override func viewInit(viewName: String) {
         print("ok")
         
+        let mapView = mapController?.getView("mapview") as! KakaoMap
+        
+        _cameraStoppedHandler = mapView.addCameraStoppedEventHandler(target: self, handler: MainMapViewController.onCameraStopped)
 
         createLabelLayer()
         createPoiStyle()

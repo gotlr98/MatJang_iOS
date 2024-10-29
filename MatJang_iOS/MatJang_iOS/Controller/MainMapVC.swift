@@ -29,14 +29,14 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         $0.isUserInteractionEnabled = true
     }
     
-    private lazy var testButton = UIImageView().then{
-        $0.image = UIImage(systemName: "figure.run")
-        $0.tintColor = .black
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(getMatJipFromAPI))
-        $0.addGestureRecognizer(tap)
-        $0.isUserInteractionEnabled = true
-    }
+//    private lazy var testButton = UIImageView().then{
+//        $0.image = UIImage(systemName: "figure.run")
+//        $0.tintColor = .black
+//        
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(getMatJipFromAPI))
+//        $0.addGestureRecognizer(tap)
+//        $0.isUserInteractionEnabled = true
+//    }
     
     private lazy var searchButton = UIImageView().then{
         $0.image = UIImage(systemName: "magnifyingglass")
@@ -86,10 +86,10 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         addDimmingView()
         
         
-        view.addSubview(testButton)
-        testButton.translatesAutoresizingMaskIntoConstraints = false
-        testButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        testButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 40).isActive = true
+//        view.addSubview(testButton)
+//        testButton.translatesAutoresizingMaskIntoConstraints = false
+//        testButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//        testButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 40).isActive = true
         
         
         view.addSubview(searchField)
@@ -252,8 +252,9 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
     func viewInit(viewName: String) {
         print("OK")
         
-        let mapView = mapController?.getView("mapview") as! KakaoMap
-        _cameraStoppedHandler = mapView.addCameraStoppedEventHandler(target: self, handler: MainMapViewController.onCameraStopped)
+//        let mapView = mapController?.getView("mapview") as! KakaoMap
+//        
+//        _cameraStoppedHandler = mapView.addCameraStoppedEventHandler(target: self, handler: MainMapViewController.onCameraStopped)
 
 
     }
@@ -320,7 +321,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
                                     })
     }
     
-    @objc func getMatJipFromAPI(){
+    func getMatJipFromAPI() async{
         
         let url = "https://dapi.kakao.com/v2/local/search/category.json"
         let parameters = ["category_group_code": "FD6", "x": "127.108678", "y": "37.402001", "radius": "10000"]
@@ -394,18 +395,20 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
     }
     
     func onCameraStopped(_ param: CameraActionEventParam) {
-        if(param.by == .pan)
-            {
-                let mapView = param.view as! KakaoMap
-                let position = mapView.getPosition(CGPoint(x: 0.5, y: 0.5))
-                
-                position.wgsCoord.latitude
-                
-                print("CurrentPosition:\(position.wgsCoord.latitude), \(position.wgsCoord.longitude)")
-                
-                // handler를 dispose한다.
-//                _cameraStoppedHandler?.dispose()
-            }
+        
+        self.categoryMatjipList = []
+
+        let mapView = mapController?.getView("mapview") as! KakaoMap
+        let position = mapView.getPosition(CGPoint(x: 0.5, y: 0.5))
+        
+        Task{
+            await getMatJipFromAPI()
+        }
+                                        
+        for matjip in self.categoryMatjipList{
+            print(matjip.place_name)
+        }
+
         }
     
     var _cameraStoppedHandler: DisposableEventHandler?
