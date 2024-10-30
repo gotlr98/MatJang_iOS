@@ -11,7 +11,13 @@ import KakaoMapsSDK
 import Then
 import Alamofire
 
+enum MapType{
+    case lookAround, findMatjip
+}
+
 class MainMapViewController: UIViewController, MapControllerDelegate{
+    
+    var maptype: MapType = .findMatjip
     
     private var sideMenuVC = SideMenuVC()
     private var dimmingView: UIView?
@@ -45,6 +51,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         let tap = UITapGestureRecognizer(target: self, action: #selector(searchMatJipFromAPI))
         $0.addGestureRecognizer(tap)
         $0.isUserInteractionEnabled = true
+        
     }
     
     private lazy var searchField = UITextField().then{
@@ -86,12 +93,6 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         addDimmingView()
         
         
-//        view.addSubview(testButton)
-//        testButton.translatesAutoresizingMaskIntoConstraints = false
-//        testButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//        testButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 40).isActive = true
-        
-        
         view.addSubview(searchField)
         searchField.translatesAutoresizingMaskIntoConstraints = false
         searchField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -101,6 +102,11 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         searchButton.translatesAutoresizingMaskIntoConstraints = false
         searchButton.leftAnchor.constraint(equalTo: searchField.rightAnchor, constant: 30).isActive = true
         searchButton.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70).isActive = true
+        
+//        let tap = SearchBtnGesture(target: self, action: #selector(searchMatjipList))
+////        tap.x =
+//        searchButton.addGestureRecognizer(tap)
+//        searchButton.isUserInteractionEnabled = true
 
         
         //KMController 생성.
@@ -108,6 +114,91 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         mapController!.delegate = self
         
         
+    }
+    
+    func getMatJipFromAPI(x: String, y: String) async{
+        
+        self.categoryMatjipList = []
+        
+        let url = "https://dapi.kakao.com/v2/local/search/category.json"
+        let parameters = ["category_group_code": "FD6", "x": x, "y": y, "radius": "10000"]
+        let headers: HTTPHeaders = ["Authorization": "KakaoAK \(Bundle.main.infoDictionary?["KAKAO_REST_API_KEY"] as? String ?? "")"]
+        AF.request(url, method: .get, parameters: parameters, headers: headers)
+            .validate(statusCode: 200..<500)
+            .responseJSON{response in
+                switch response.result{
+                case .success(let data):
+                    do{
+                        let value = [data]
+                        for val in value{
+                            if let obj = val as? [String: Any]{
+                                if let convData = obj["documents"] as? [[String:String]]{
+                                    for temp in convData{
+                                        self.categoryMatjipList.append(Matjip(place_name: temp["place_name"], x: temp["x"], y: temp["y"], address_name: temp["road_address_name"], category_name: temp["category_name"]))
+                                    }
+                                }
+                                
+                            }
+                        }
+                    }
+                    break
+                case .failure(let error):
+                    print(error)
+                    break
+
+                }
+            }
+        
+    }
+    
+    @objc func searchMatJipFromAPI(){
+        
+        let mapView = mapController?.getView("mapview") as! KakaoMap
+        let position = mapView.getPosition(CGPoint(x: 0.5, y: 0.5))
+        
+        self.searchMatjipList = []
+                
+        if searchField.text != "" {
+            let query = searchField.text
+            let url = "https://dapi.kakao.com/v2/local/search/keyword.json"
+            let parameters = ["query": query?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), "category_group_code": "FD6", "x": String(position.wgsCoord.latitude), "y": String( position.wgsCoord.longitude), "radius": "10000"]
+            let headers: HTTPHeaders = ["Authorization": "KakaoAK \(Bundle.main.infoDictionary?["KAKAO_REST_API_KEY"] as? String ?? "")"]
+            AF.request(url, method: .get, parameters: parameters, headers: headers)
+                .validate(statusCode: 200..<500)
+                .responseJSON{response in
+                    switch response.result{
+                    case .success(let data):
+                        do{
+                            let value = [data]
+                            for val in value{
+                                if let obj = val as? [String: Any]{
+                                    if let convData = obj["documents"] as? [[String:String]]{
+                                        for temp in convData{
+                                            print(temp)
+                                            
+                                            self.searchMatjipList.append(Matjip(place_name: temp["place_name"], x: temp["x"], y: temp["y"], address_name: temp["road_address_name"], category_name: temp["category_name"]))
+                                            
+//                                            print("\(temp["place_name"]): \(temp["road_address_name"])")
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                            
+                        }
+                        break
+                    case .failure(let error):
+                        print(error)
+                        break
+
+                    }
+                }
+        }
+        else{
+            let alert = UIAlertController(title: "Error",message: "검색어를 입력해주세요", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Close", style: .destructive))
+            self.present(alert, animated: false)
+        }
     }
     
     private func addDimmingView() {
@@ -321,95 +412,26 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
                                     })
     }
     
-    func getMatJipFromAPI() async{
-        
-        let url = "https://dapi.kakao.com/v2/local/search/category.json"
-        let parameters = ["category_group_code": "FD6", "x": "127.108678", "y": "37.402001", "radius": "10000"]
-        let headers: HTTPHeaders = ["Authorization": "KakaoAK \(Bundle.main.infoDictionary?["KAKAO_REST_API_KEY"] as? String ?? "")"]
-        AF.request(url, method: .get, parameters: parameters, headers: headers)
-            .validate(statusCode: 200..<500)
-            .responseJSON{response in
-                switch response.result{
-                case .success(let data):
-                    do{
-                        let value = [data]
-                        for val in value{
-                            if let obj = val as? [String: Any]{
-                                if let convData = obj["documents"] as? [[String:String]]{
-                                    for temp in convData{
-                                        self.categoryMatjipList.append(Matjip(place_name: temp["place_name"], x: temp["x"], y: temp["y"], address_name: temp["road_address_name"], category_name: temp["category_name"]))
-                                    }
-                                }
-                                
-                            }
-                        }
-                    }
-                    break
-                case .failure(let error):
-                    print(error)
-                    break
-
-                }
-            }
-        
-    }
     
-    @objc func searchMatJipFromAPI(){
-                
-        if searchField.text != "" {
-            let query = searchField.text
-            let url = "https://dapi.kakao.com/v2/local/search/keyword.json"
-            let parameters = ["query": query, "category_group_code": "FD6", "x": "127.108678", "y": "37.402001", "radius": "10000"]
-            let headers: HTTPHeaders = ["Authorization": "KakaoAK \(Bundle.main.infoDictionary?["KAKAO_REST_API_KEY"] as? String ?? "")"]
-            AF.request(url, method: .get, parameters: parameters, headers: headers)
-                .validate(statusCode: 200..<500)
-                .responseJSON{response in
-                    switch response.result{
-                    case .success(let data):
-                        do{
-                            let value = [data]
-                            for val in value{
-                                if let obj = val as? [String: Any]{
-                                    if let convData = obj["documents"] as? [[String:String]]{
-                                        for temp in convData{
-                                            self.searchMatjipList.append(Matjip(place_name: temp["place_name"], x: temp["x"], y: temp["y"], address_name: temp["road_address_name"], category_name: temp["category_name"]))
-                                        }
-                                    }
-                                    
-                                }
-                            }
-                        }
-                        break
-                    case .failure(let error):
-                        print(error)
-                        break
-
-                    }
-                }
-        }
-        else{
-            let alert = UIAlertController(title: "Error",message: "검색어를 입력해주세요", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Close", style: .destructive))
-            self.present(alert, animated: false)
-        }
-    }
     
     func onCameraStopped(_ param: CameraActionEventParam) {
         
-        self.categoryMatjipList = []
-
-        let mapView = mapController?.getView("mapview") as! KakaoMap
-        let position = mapView.getPosition(CGPoint(x: 0.5, y: 0.5))
+        if(maptype == .findMatjip){
+            let mapView = mapController?.getView("mapview") as! KakaoMap
+            let position = mapView.getPosition(CGPoint(x: 0.5, y: 0.5))
+            
+            Task{
+                await getMatJipFromAPI(x: String(position.wgsCoord.latitude), y: String(position.wgsCoord.longitude))
+            }
+                                            
+            for matjip in self.categoryMatjipList{
+                print(matjip.place_name)
+            }
+        }
         
-        Task{
-            await getMatJipFromAPI()
-        }
-                                        
-        for matjip in self.categoryMatjipList{
-            print(matjip.place_name)
-        }
+        
 
-        }
+    }
     
     var _cameraStoppedHandler: DisposableEventHandler?
     
