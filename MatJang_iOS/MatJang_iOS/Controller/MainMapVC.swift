@@ -161,9 +161,9 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         if searchField.text != "" {
             let query = searchField.text
             let url = "https://dapi.kakao.com/v2/local/search/keyword.json"
-            let parameters = ["query": query?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), "category_group_code": "FD6", "x": String(position.wgsCoord.latitude), "y": String( position.wgsCoord.longitude), "radius": "10000"]
+            let parameters = ["query": query, "category_group_code": "FD6", "x": String(position.wgsCoord.latitude), "y": String( position.wgsCoord.longitude), "radius": "10000"]
             let headers: HTTPHeaders = ["Authorization": "KakaoAK \(Bundle.main.infoDictionary?["KAKAO_REST_API_KEY"] as? String ?? "")"]
-            AF.request(url, method: .get, parameters: parameters, headers: headers)
+            AF.request(url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!, method: .get, parameters: parameters, headers: headers)
                 .validate(statusCode: 200..<500)
                 .responseJSON{response in
                     switch response.result{
@@ -174,17 +174,17 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
                                 if let obj = val as? [String: Any]{
                                     if let convData = obj["documents"] as? [[String:String]]{
                                         for temp in convData{
-                                            print(temp)
-                                            
                                             self.searchMatjipList.append(Matjip(place_name: temp["place_name"], x: temp["x"], y: temp["y"], address_name: temp["road_address_name"], category_name: temp["category_name"]))
                                             
-//                                            print("\(temp["place_name"]): \(temp["road_address_name"])")
                                         }
                                     }
                                     
                                 }
                             }
                             
+                            let searchVC = SearchResultView()
+                            searchVC.search_list = self.searchMatjipList
+                            self.present(searchVC, animated: false)
                         }
                         break
                     case .failure(let error):
