@@ -24,6 +24,9 @@
 		8A64FF672C5755F600CAD716 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A64FF662C5755F600CAD716 /* SignInView.swift */; };
 		8A6998B62CD0BF1C007CDAC2 /* SearchBtnGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6998B52CD0BF1C007CDAC2 /* SearchBtnGesture.swift */; };
 		8A6EA4DD2C63176800B34147 /* MainMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6EA4DC2C63176800B34147 /* MainMap.swift */; };
+		8A9746862CD899A800D7F6DC /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9746852CD899A800D7F6DC /* CollectionViewCell.swift */; };
+		8A9746892CD89AB400D7F6DC /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8A9746882CD89AB400D7F6DC /* SnapKit */; };
+		8A97468B2CD89AB400D7F6DC /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 8A97468A2CD89AB400D7F6DC /* SnapKit-Dynamic */; };
 		8AA04E1A2CB78ADC00BECCCB /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA04E192CB78ADC00BECCCB /* UserModel.swift */; };
 		8AA04E1C2CB78D3700BECCCB /* Matjip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA04E1B2CB78D3700BECCCB /* Matjip.swift */; };
 		8AA04E1E2CB793EA00BECCCB /* UserModelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA04E1D2CB793EA00BECCCB /* UserModelDelegate.swift */; };
@@ -51,6 +54,7 @@
 		8A6998B52CD0BF1C007CDAC2 /* SearchBtnGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBtnGesture.swift; sourceTree = "<group>"; };
 		8A6EA4DC2C63176800B34147 /* MainMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMap.swift; sourceTree = "<group>"; };
 		8A80273C2C58ABE600C1FEC0 /* MatJang_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MatJang_iOS.entitlements; sourceTree = "<group>"; };
+		8A9746852CD899A800D7F6DC /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		8AA04E192CB78ADC00BECCCB /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		8AA04E1B2CB78D3700BECCCB /* Matjip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matjip.swift; sourceTree = "<group>"; };
 		8AA04E1D2CB793EA00BECCCB /* UserModelDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModelDelegate.swift; sourceTree = "<group>"; };
@@ -75,6 +79,8 @@
 				8A64FF592C5745E300CAD716 /* FirebaseAppCheck in Frameworks */,
 				8A64FF572C5745E300CAD716 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				8A64FF632C57491400CAD716 /* KakaoSDK in Frameworks */,
+				8A9746892CD89AB400D7F6DC /* SnapKit in Frameworks */,
+				8A97468B2CD89AB400D7F6DC /* SnapKit-Dynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,6 +139,7 @@
 				8A6EA4DC2C63176800B34147 /* MainMap.swift */,
 				8AD2FA822CBE657600AFD4C3 /* UserDetailView.swift */,
 				8A4B8D7C2CD4CF7D00E77A25 /* SearchResultView.swift */,
+				8A9746852CD899A800D7F6DC /* CollectionViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -191,6 +198,8 @@
 				8AD626DB2C58BCA900FFC8BD /* JWTDecode */,
 				8AC647572C61E7CB0071C420 /* KakaoMapsSDK-SPM */,
 				8AF12D392CB4F3E300C99888 /* Then */,
+				8A9746882CD89AB400D7F6DC /* SnapKit */,
+				8A97468A2CD89AB400D7F6DC /* SnapKit-Dynamic */,
 			);
 			productName = MatJang_iOS;
 			productReference = 8A64FF382C57452600CAD716 /* MatJang_iOS.app */;
@@ -226,6 +235,7 @@
 				8AD626DA2C58BCA900FFC8BD /* XCRemoteSwiftPackageReference "JWTDecode.swift" */,
 				8AC647562C61E7CA0071C420 /* XCRemoteSwiftPackageReference "KakaoMapsSDK-SPM" */,
 				8AF12D382CB4F3E300C99888 /* XCRemoteSwiftPackageReference "Then" */,
+				8A9746872CD89AB400D7F6DC /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			productRefGroup = 8A64FF392C57452600CAD716 /* Products */;
 			projectDirPath = "";
@@ -265,6 +275,7 @@
 				8AA04E1C2CB78D3700BECCCB /* Matjip.swift in Sources */,
 				8A64FF3C2C57452600CAD716 /* AppDelegate.swift in Sources */,
 				8A64FF672C5755F600CAD716 /* SignInView.swift in Sources */,
+				8A9746862CD899A800D7F6DC /* CollectionViewCell.swift in Sources */,
 				8A64FF3E2C57452600CAD716 /* SceneDelegate.swift in Sources */,
 				8A6EA4DD2C63176800B34147 /* MainMap.swift in Sources */,
 				8AD2FA832CBE657600AFD4C3 /* UserDetailView.swift in Sources */,
@@ -510,6 +521,14 @@
 				minimumVersion = 2.22.5;
 			};
 		};
+		8A9746872CD89AB400D7F6DC /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
 		8AC647562C61E7CA0071C420 /* XCRemoteSwiftPackageReference "KakaoMapsSDK-SPM" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kakao-mapsSDK/KakaoMapsSDK-SPM.git";
@@ -571,6 +590,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8A64FF612C57491400CAD716 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDKAuth;
+		};
+		8A9746882CD89AB400D7F6DC /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A9746872CD89AB400D7F6DC /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		8A97468A2CD89AB400D7F6DC /* SnapKit-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A9746872CD89AB400D7F6DC /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = "SnapKit-Dynamic";
 		};
 		8AC647572C61E7CB0071C420 /* KakaoMapsSDK-SPM */ = {
 			isa = XCSwiftPackageProductDependency;
