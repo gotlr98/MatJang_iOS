@@ -122,7 +122,17 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
     }
     
     @objc func didDismissSearchResultView(_ notification: Notification){
-        print("\(self.selectedMatjip["place_name"])")
+        moveCameraAfterSearch(x: self.selectedMatjip["x"] ?? "", y: self.selectedMatjip["y"] ?? "")
+    }
+    
+    func moveCameraAfterSearch(x: String, y: String) {
+        let mapView: KakaoMap = mapController?.getView("mapview") as! KakaoMap
+        
+        // CameraUpdateType을 CameraPosition으로 생성하여 지도의 카메라를 특정 좌표로 이동시킨다. MapPoint, 카메라가 바라보는 높이, 회전각 및 틸트를 지정할 수 있다.
+        mapView.moveCamera(CameraUpdate.make(cameraPosition: CameraPosition(target: MapPoint(longitude: Double(x) ?? 0, latitude: Double(y) ?? 0), height: 0, rotation: 0, tilt: 0)))
+        
+        
+        
     }
     
     func getMatJipFromAPI(x: String, y: String) async{
