@@ -117,7 +117,12 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         mapController = KMController(viewContainer: mapContainer!)
         mapController!.delegate = self
         
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didDismissSearchResultView(_:)), name: NSNotification.Name("DismissSearchResultView"), object: nil)
         
+    }
+    
+    @objc func didDismissSearchResultView(_ notification: Notification){
+        print("\(self.selectedMatjip["place_name"])")
     }
     
     func getMatJipFromAPI(x: String, y: String) async{
@@ -283,6 +288,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
     override func viewWillDisappear(_ animated: Bool) {
         _appear = false
         mapController?.pauseEngine()  //렌더링 중지.
+
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -436,7 +442,6 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
             }
         }
         
-        print("\(self.selectedMatjip["place_name"]) selected")
         
         
 

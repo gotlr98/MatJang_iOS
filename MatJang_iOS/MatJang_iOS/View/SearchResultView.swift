@@ -44,6 +44,10 @@ class SearchResultView: UIViewController{
         
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        NotificationCenter.default.post(name: NSNotification.Name("DismissSearchResultView"), object: nil, userInfo: nil)
+    }
+    
     func configureLayout() {
         // Add SubView
         view.addSubview(collectionView)
