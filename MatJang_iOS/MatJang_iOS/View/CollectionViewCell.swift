@@ -11,6 +11,8 @@ import UIKit
 class CollectionViewCell: UICollectionViewCell{
     static let identifier: String = "CollectionViewCell"
     
+    
+    
     private let label: UILabel = {
         let label = UILabel()
         label.textColor = .black

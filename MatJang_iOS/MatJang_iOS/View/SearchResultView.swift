@@ -14,26 +14,26 @@ class SearchResultView: UIViewController{
     
     var search_list: [Matjip] = []
     let cellMultiplier: CGFloat = 0.5
+    weak var delegate: getSelectedMatjip?
 
-    private lazy var btn = UIImageView().then{
-        $0.image = UIImage(systemName: "magnifyingglass")
-        $0.tintColor = .black
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(temp))
-        $0.addGestureRecognizer(tap)
-        $0.isUserInteractionEnabled = true
-        
-    }
-    
+//    private lazy var btn = UIImageView().then{
+//        $0.image = UIImage(systemName: "magnifyingglass")
+//        $0.tintColor = .black
+//        
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(temp))
+//        $0.addGestureRecognizer(tap)
+//        $0.isUserInteractionEnabled = true
+//        
+//    }
     
     //  Create UICollectionView
     private let collectionView: UICollectionView = {
         //  Configure Layout
         var layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
+        layout.scrollDirection = .vertical
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .black
+        collectionView.backgroundColor = .white
         return collectionView
     }()
     
@@ -42,11 +42,6 @@ class SearchResultView: UIViewController{
         configureLayout()
         configureCollectionView()
         
-        self.view.addSubview(btn)
-        self.view.backgroundColor = .white
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-        btn.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
     }
     
     func configureLayout() {
@@ -55,7 +50,7 @@ class SearchResultView: UIViewController{
     
         collectionView.snp.makeConstraints { make in
             make.width.equalToSuperview()
-            make.height.equalTo((view.frame.size.height / 5 ) * 3)
+            make.height.equalTo(view.frame.size.height)
             make.top.leading.equalTo(view.safeAreaLayoutGuide)
         }
     }
@@ -70,12 +65,7 @@ class SearchResultView: UIViewController{
         // Regist Cell
         collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: CollectionViewCell.identifier)
     }
-    
-    @objc func temp(){
-        for li in search_list{
-            print(li.place_name)
-        }
-    }
+
 }
 
 extension SearchResultView: UICollectionViewDelegate {
@@ -108,6 +98,11 @@ extension SearchResultView: UICollectionViewDataSource {
             cell.configure(with: search_list[indexPath.row])
             
             return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.sendData(place_name: search_list[indexPath.row].place_name ?? "", x: search_list[indexPath.row].x ?? "", y: search_list[indexPath.row].y ?? "")
+        self.dismiss(animated: true)
     }
 }
 

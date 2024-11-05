@@ -15,7 +15,11 @@ enum MapType{
     case lookAround, findMatjip
 }
 
-class MainMapViewController: UIViewController, MapControllerDelegate{
+protocol getSelectedMatjip: AnyObject {
+    func sendData(place_name: String, x: String, y: String)
+}
+
+class MainMapViewController: UIViewController, MapControllerDelegate, getSelectedMatjip{
     
     var maptype: MapType = .findMatjip
     
@@ -25,6 +29,8 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
     var socialType: SocialType?
     var searchMatjipList: [Matjip] = []
     var categoryMatjipList: [Matjip] = []
+    var selectedMatjip: [String:String] = [:]
+    
     
     private lazy var sideMenuButton = UIImageView().then{
         $0.image = UIImage(systemName: "text.justify")
@@ -34,15 +40,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         $0.addGestureRecognizer(tap)
         $0.isUserInteractionEnabled = true
     }
-    
-//    private lazy var testButton = UIImageView().then{
-//        $0.image = UIImage(systemName: "figure.run")
-//        $0.tintColor = .black
-//        
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(getMatJipFromAPI))
-//        $0.addGestureRecognizer(tap)
-//        $0.isUserInteractionEnabled = true
-//    }
+
     
     private lazy var searchButton = UIImageView().then{
         $0.image = UIImage(systemName: "magnifyingglass")
@@ -59,6 +57,12 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         $0.rightView = searchButton
         $0.spellCheckingType = .no
         $0.borderStyle = .line
+    }
+    
+    func sendData(place_name: String, x: String, y: String) {
+        self.selectedMatjip["place_name"] = place_name
+        self.selectedMatjip["x"] = x
+        self.selectedMatjip["y"] = y
     }
 
     
@@ -183,7 +187,9 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
                             }
                             
                             let searchVC = SearchResultView()
+                            searchVC.delegate = self
                             searchVC.search_list = self.searchMatjipList
+                            self.searchField.text = ""
                             self.present(searchVC, animated: false)
                         }
                         break
@@ -283,6 +289,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
         removeObservers()
         mapController?.resetEngine()     //엔진 정지. 추가되었던 ViewBase들이 삭제된다.
     }
+
     
     // 인증 성공시 delegate 호출.
     func authenticationSucceeded() {
@@ -428,6 +435,8 @@ class MainMapViewController: UIViewController, MapControllerDelegate{
                 print(matjip.place_name)
             }
         }
+        
+        print("\(self.selectedMatjip["place_name"]) selected")
         
         
 
