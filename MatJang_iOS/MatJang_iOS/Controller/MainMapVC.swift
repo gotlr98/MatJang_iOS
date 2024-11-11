@@ -44,9 +44,21 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
     }
     
     private lazy var zoomDownButton = UIButton().then{
-        $0.backgroundColor = .black
+        $0.backgroundColor = .lightGray
+        $0.titleLabel?.font = .systemFont(ofSize: 15)
+        $0.setTitle("-", for: .normal)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(zoomDown))
+        $0.addGestureRecognizer(tap)
+        $0.isUserInteractionEnabled = true
+    }
+    
+    private lazy var zoomInButton = UIButton().then{
+        $0.backgroundColor = .lightGray
+        $0.titleLabel?.font = .systemFont(ofSize: 15)
+        $0.setTitle("+", for: .normal)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(zoomIn))
         $0.addGestureRecognizer(tap)
         $0.isUserInteractionEnabled = true
     }
@@ -71,7 +83,18 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
     
     @objc func zoomDown(){
         let view = mapController?.getView("mapview") as! KakaoMap
-        view.zoomLevel.advanced(by: -1)
+        let position = view.getPosition(CGPoint(x: 1, y: 1))
+        let curZoomLevel = view.zoomLevel
+        let cameraUpdate = CameraUpdate.make(cameraPosition: CameraPosition(target: position, zoomLevel: curZoomLevel-1, rotation: 0, tilt: 0))
+        view.animateCamera(cameraUpdate: cameraUpdate, options: CameraAnimationOptions(autoElevation: false, consecutive: true, durationInMillis: 500))
+    }
+    
+    @objc func zoomIn(){
+        let view = mapController?.getView("mapview") as! KakaoMap
+        let position = view.getPosition(CGPoint(x: 1, y: 1))
+        let curZoomLevel = view.zoomLevel
+        let cameraUpdate = CameraUpdate.make(cameraPosition: CameraPosition(target: position, zoomLevel: curZoomLevel+1, rotation: 0, tilt: 0))
+        view.animateCamera(cameraUpdate: cameraUpdate, options: CameraAnimationOptions(autoElevation: false, consecutive: true, durationInMillis: 500))
     }
     
     func sendData(place_name: String, x: String, y: String) {
@@ -122,9 +145,17 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         searchButton.leftAnchor.constraint(equalTo: searchField.rightAnchor, constant: 30).isActive = true
         searchButton.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70).isActive = true
         
+        view.addSubview(zoomInButton)
+        zoomInButton.translatesAutoresizingMaskIntoConstraints = false
+        zoomInButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
+        zoomInButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
+        
         view.addSubview(zoomDownButton)
         zoomDownButton.translatesAutoresizingMaskIntoConstraints = false
-        zoomDownButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
+        zoomDownButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15).isActive = true
+        zoomDownButton.topAnchor.constraint(equalTo: zoomInButton.bottomAnchor, constant: 5).isActive = true
+        
+        
         
 //        let tap = SearchBtnGesture(target: self, action: #selector(searchMatjipList))
 ////        tap.x =
@@ -190,14 +221,12 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
     
     func createPois(pointList: [[String]]) {
         let view = mapController?.getView("mapview") as! KakaoMap
-        var count = 0
         let manager = view.getLabelManager()
         let layer = manager.getLabelLayer(layerID: "PoiLayer")   // 생성한 POI를 추가할 레이어를 가져온다.
         let poiOption = PoiOptions(styleID: "customStyle1") // 생성할 POI의 Option을 지정하기 위한 자료를 담는 클래스를 생성. 사용할 스타일의 ID를 지정한다.
         poiOption.rank = 0
         poiOption.clickable = true // clickable 옵션을 true로 설정한다. default는 false로 설정되어있다.
-        var poiList: [String:Poi] = [:]
-        
+        self.findMapPoint = []
 //        let poi1 = layer?.addPoi(option: poiOption, at: MapPoint(longitude: Double(x) ?? 0, latitude: Double(y) ?? 0), callback: {(_ poi: (Poi?)) -> Void in
 //            print("create poi")
 //            }
@@ -208,12 +237,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         
         
         for point in pointList{
-            
-//            poiList[String(count)] = layer?.addPoi(option: poiOption, at: MapPoint(longitude: Double(point[0]) ?? 0, latitude: Double(point[1]) ?? 0), callback: {(_ poi: (Poi?)) -> Void in
-//            print("create poi")})
             findMapPoint.append(MapPoint(longitude: Double(point[0]) ?? 0, latitude: Double(point[1]) ?? 0))
-//            poiList[String(count)]?.show()
-            count+=1
         }
         let poi = layer?.addPois(option: poiOption, at: findMapPoint)
         
@@ -236,10 +260,10 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
             var count = 0
             
             Task{
+                
                 await getMatJipFromAPI(x: String(position.wgsCoord.longitude), y: String(position.wgsCoord.latitude))
             }
             
-            print(self.categoryMatjipList)
                                             
             for matjip in self.categoryMatjipList{
                 
