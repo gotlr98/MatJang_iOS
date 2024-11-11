@@ -23,6 +23,8 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
     
     var maptype: MapType = .findMatjip
     
+    var findMapPoint: [MapPoint] = []
+    
     private var sideMenuVC = SideMenuVC()
     private var dimmingView: UIView?
     var emailTest: String?
@@ -37,6 +39,14 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         $0.tintColor = .black
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(presentSideMenu))
+        $0.addGestureRecognizer(tap)
+        $0.isUserInteractionEnabled = true
+    }
+    
+    private lazy var zoomDownButton = UIButton().then{
+        $0.backgroundColor = .black
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(zoomDown))
         $0.addGestureRecognizer(tap)
         $0.isUserInteractionEnabled = true
     }
@@ -57,6 +67,11 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         $0.rightView = searchButton
         $0.spellCheckingType = .no
         $0.borderStyle = .line
+    }
+    
+    @objc func zoomDown(){
+        let view = mapController?.getView("mapview") as! KakaoMap
+        view.zoomLevel.advanced(by: -1)
     }
     
     func sendData(place_name: String, x: String, y: String) {
@@ -106,6 +121,10 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         searchButton.translatesAutoresizingMaskIntoConstraints = false
         searchButton.leftAnchor.constraint(equalTo: searchField.rightAnchor, constant: 30).isActive = true
         searchButton.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70).isActive = true
+        
+        view.addSubview(zoomDownButton)
+        zoomDownButton.translatesAutoresizingMaskIntoConstraints = false
+        zoomDownButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
         
 //        let tap = SearchBtnGesture(target: self, action: #selector(searchMatjipList))
 ////        tap.x =
@@ -189,11 +208,52 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         
         
         for point in pointList{
-            print(point)
-//            poiList[String(count)] = layer?.addPoi(option: poiOption, at: MapPoint(longitude: Double(point[0]) ?? 0, latitude: Double(point[1]) ?? 0))
+            
+//            poiList[String(count)] = layer?.addPoi(option: poiOption, at: MapPoint(longitude: Double(point[0]) ?? 0, latitude: Double(point[1]) ?? 0), callback: {(_ poi: (Poi?)) -> Void in
+//            print("create poi")})
+            findMapPoint.append(MapPoint(longitude: Double(point[0]) ?? 0, latitude: Double(point[1]) ?? 0))
 //            poiList[String(count)]?.show()
-//            count+=1
+            count+=1
         }
+        let poi = layer?.addPois(option: poiOption, at: findMapPoint)
+        
+        for a in poi!{
+            a.show()
+        }
+        
+        
+    }
+    
+    func onCameraStopped(_ param: CameraActionEventParam) {
+        
+        
+        
+        if(maptype == .findMatjip){
+            let mapView = mapController?.getView("mapview") as! KakaoMap
+            let position = mapView.getPosition(CGPoint(x: 1, y: 1))
+            
+            var pointList = Array(repeating: Array(repeating: "",count: 2),  count: self.categoryMatjipList.count)
+            var count = 0
+            
+            Task{
+                await getMatJipFromAPI(x: String(position.wgsCoord.longitude), y: String(position.wgsCoord.latitude))
+            }
+            
+            print(self.categoryMatjipList)
+                                            
+            for matjip in self.categoryMatjipList{
+                
+                pointList[count][0] = matjip.x ?? ""
+                pointList[count][1] = matjip.y ?? ""
+                count = count + 1
+                
+            }
+            createPois(pointList: pointList)
+        }
+        
+        
+        
+
     }
     
     // POI 탭 이벤트가 발생하고, 표시하고 있던 Poi를 숨긴다.
@@ -221,7 +281,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         self.categoryMatjipList = []
         
         let url = "https://dapi.kakao.com/v2/local/search/category.json"
-        let parameters = ["category_group_code": "FD6", "x": x, "y": y, "radius": "10000"]
+        let parameters = ["category_group_code": "FD6", "x": x, "y": y, "radius": "1000"]
         let headers: HTTPHeaders = ["Authorization": "KakaoAK \(Bundle.main.infoDictionary?["KAKAO_REST_API_KEY"] as? String ?? "")"]
         Task{
             await AF.request(url, method: .get, parameters: parameters, headers: headers)
@@ -263,7 +323,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         if searchField.text != "" {
             let query = searchField.text
             let url = "https://dapi.kakao.com/v2/local/search/keyword.json"
-            let parameters = ["query": query, "category_group_code": "FD6", "x": String(position.wgsCoord.latitude), "y": String( position.wgsCoord.longitude), "radius": "10000"]
+            let parameters = ["query": query, "category_group_code": "FD6", "x": String(position.wgsCoord.latitude), "y": String( position.wgsCoord.longitude), "radius": "1000"]
             let headers: HTTPHeaders = ["Authorization": "KakaoAK \(Bundle.main.infoDictionary?["KAKAO_REST_API_KEY"] as? String ?? "")"]
             AF.request(url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!, method: .get, parameters: parameters, headers: headers)
                 .validate(statusCode: 200..<500)
@@ -520,35 +580,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
     
     
     
-    func onCameraStopped(_ param: CameraActionEventParam) {
-        
-        var pointList = Array(repeating: Array(repeating: "",count: self.categoryMatjipList.count),  count: 2)
-        var count = 0
-        
-        if(maptype == .findMatjip){
-            let mapView = mapController?.getView("mapview") as! KakaoMap
-            let position = mapView.getPosition(CGPoint(x: 0.5, y: 0.5))
-            
-            Task{
-                await getMatJipFromAPI(x: String(position.wgsCoord.latitude), y: String(position.wgsCoord.longitude))
-            }
-            
-            print(self.categoryMatjipList)
-                                            
-            for matjip in self.categoryMatjipList{
-                
-                pointList[count][0] = matjip.x ?? ""
-                pointList[count][1] = matjip.y ?? ""
-                count = count + 1
-                
-            }
-            createPois(pointList: pointList)
-        }
-        
-        
-        
-
-    }
+    
     
     var _cameraStoppedHandler: DisposableEventHandler?
     
