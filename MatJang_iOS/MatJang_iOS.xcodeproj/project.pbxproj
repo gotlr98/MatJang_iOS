@@ -35,6 +35,7 @@
 		8AD626DC2C58BCA900FFC8BD /* JWTDecode in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD626DB2C58BCA900FFC8BD /* JWTDecode */; };
 		8AD626DE2C58C2D400FFC8BD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AD626DD2C58C2D400FFC8BD /* GoogleService-Info.plist */; };
 		8ADDC7952CE2EE3B009AA6F9 /* iOSDropDown in Frameworks */ = {isa = PBXBuildFile; productRef = 8ADDC7942CE2EE3B009AA6F9 /* iOSDropDown */; };
+		8ADDC7982CE30027009AA6F9 /* SafeAreaBrush in Frameworks */ = {isa = PBXBuildFile; productRef = 8ADDC7972CE30027009AA6F9 /* SafeAreaBrush */; };
 		8AF12D372CB4ED0000C99888 /* SideMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF12D362CB4ED0000C99888 /* SideMenuVC.swift */; };
 		8AF12D3A2CB4F3E300C99888 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 8AF12D392CB4F3E300C99888 /* Then */; };
 /* End PBXBuildFile section */
@@ -79,6 +80,7 @@
 				8AC647582C61E7CB0071C420 /* KakaoMapsSDK-SPM in Frameworks */,
 				8A64FF592C5745E300CAD716 /* FirebaseAppCheck in Frameworks */,
 				8A64FF572C5745E300CAD716 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				8ADDC7982CE30027009AA6F9 /* SafeAreaBrush in Frameworks */,
 				8A64FF632C57491400CAD716 /* KakaoSDK in Frameworks */,
 				8A4F56FE2CD9C38C001C2BB8 /* SnapKit in Frameworks */,
 			);
@@ -200,6 +202,7 @@
 				8AF12D392CB4F3E300C99888 /* Then */,
 				8A4F56FD2CD9C38C001C2BB8 /* SnapKit */,
 				8ADDC7942CE2EE3B009AA6F9 /* iOSDropDown */,
+				8ADDC7972CE30027009AA6F9 /* SafeAreaBrush */,
 			);
 			productName = MatJang_iOS;
 			productReference = 8A64FF382C57452600CAD716 /* MatJang_iOS.app */;
@@ -237,6 +240,7 @@
 				8AF12D382CB4F3E300C99888 /* XCRemoteSwiftPackageReference "Then" */,
 				8A4F56FC2CD9C38C001C2BB8 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				8ADDC7932CE2EE3B009AA6F9 /* XCRemoteSwiftPackageReference "iOSDropDown" */,
+				8ADDC7962CE30027009AA6F9 /* XCRemoteSwiftPackageReference "SafeAreaBrush" */,
 			);
 			productRefGroup = 8A64FF392C57452600CAD716 /* Products */;
 			projectDirPath = "";
@@ -554,6 +558,14 @@
 				minimumVersion = 0.4.0;
 			};
 		};
+		8ADDC7962CE30027009AA6F9 /* XCRemoteSwiftPackageReference "SafeAreaBrush" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WallabyStuff/SafeAreaBrush";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.4;
+			};
+		};
 		8AF12D382CB4F3E300C99888 /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then";
@@ -619,6 +631,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8ADDC7932CE2EE3B009AA6F9 /* XCRemoteSwiftPackageReference "iOSDropDown" */;
 			productName = iOSDropDown;
+		};
+		8ADDC7972CE30027009AA6F9 /* SafeAreaBrush */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8ADDC7962CE30027009AA6F9 /* XCRemoteSwiftPackageReference "SafeAreaBrush" */;
+			productName = SafeAreaBrush;
 		};
 		8AF12D392CB4F3E300C99888 /* Then */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -13,4 +13,9 @@ class UserDetailView: UIViewController{
     override func viewDidLoad() {
         self.view.backgroundColor = .black
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.post(name: UIApplication.didBecomeActiveNotification, object: nil)
+        print("view disappear")
+    }
 }

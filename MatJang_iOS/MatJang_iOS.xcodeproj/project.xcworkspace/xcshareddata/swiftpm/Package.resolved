@@ -1,5 +1,5 @@
 {
-  "originHash" : "e310f8eb57c8e3a9c60adafb132492c7172ea32eedd33116fb6ba56bdf88b074",
+  "originHash" : "ed0f1cd9a8f7fe328fca0351347c84db70f4b2589c5c18c90e4481b1751eb747",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -152,6 +152,15 @@
       "state" : {
         "revision" : "540318ecedd63d883069ae7f1ed811a2df00b6ac",
         "version" : "2.4.0"
+      }
+    },
+    {
+      "identity" : "safeareabrush",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/WallabyStuff/SafeAreaBrush",
+      "state" : {
+        "revision" : "4943d253687368afbea7ea09c19530a0361ed613",
+        "version" : "1.0.4"
       }
     },
     {

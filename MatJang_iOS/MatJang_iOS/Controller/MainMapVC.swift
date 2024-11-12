@@ -11,6 +11,7 @@ import KakaoMapsSDK
 import Then
 import Alamofire
 import iOSDropDown
+import SafeAreaBrush
 
 enum MapType: String{
     case lookAround, findMatjip
@@ -94,6 +95,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
     private lazy var dropDown = DropDown(frame: CGRect(x: 100, y: 100, width: 200, height: 30)).then{
         $0.optionArray = [MapType.findMatjip.kind, MapType.lookAround.kind]
         $0.text = $0.optionArray[0]
+        $0.backgroundColor = .lightGray
         $0.didSelect{(select, index, id) in
             print("select: \(select)")
         }
@@ -146,12 +148,15 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         mapContainer = self.view as? KMViewContainer
 //        self.navigationItem.hidesBackButton = true
         self.navigationController?.isNavigationBarHidden = false
+        self.navigationController?.navigationBar.backgroundColor = .lightGray
         self.navigationItem.title = "맛 짱"
 //        self.navigationController?.navigationBar.backgroundColor = .white
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: sideMenuButton)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: dropDown)
         
         addDimmingView()
+        
+        fillSafeArea(position: .top, color: .lightGray)
         
         
         view.addSubview(searchField)
@@ -597,6 +602,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
 
     @objc func didBecomeActive(){
         mapController?.activateEngine() //뷰가 active 상태가 되면 렌더링 시작. 엔진은 미리 시작된 상태여야 함.
+        print("didBecomeActive")
     }
     
     func showToast(_ view: UIView, message: String, duration: TimeInterval = 2.0) {

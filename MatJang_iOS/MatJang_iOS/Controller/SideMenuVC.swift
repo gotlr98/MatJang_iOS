@@ -31,7 +31,7 @@ class SideMenuVC: UIViewController{
         self.view.layer.cornerRadius = 20
         self.view.clipsToBounds = true
         
-        self.view.backgroundColor = .blue.withAlphaComponent(0.3)
+        self.view.backgroundColor = .white.withAlphaComponent(0.7)
         
         self.view.addSubview(userButton)
         userButton.translatesAutoresizingMaskIntoConstraints = false
