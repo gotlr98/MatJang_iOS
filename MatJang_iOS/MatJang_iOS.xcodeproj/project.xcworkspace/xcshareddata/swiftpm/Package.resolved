@@ -1,5 +1,5 @@
 {
-  "originHash" : "75f3e4256c66e82f1e5bf68d7c7ebe53b12a4fab3444e8d3ffb4e1725fa98163",
+  "originHash" : "e310f8eb57c8e3a9c60adafb132492c7172ea32eedd33116fb6ba56bdf88b074",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -89,6 +89,15 @@
       "state" : {
         "revision" : "2d12673670417654f08f5f90fdd62926dc3a2648",
         "version" : "100.0.0"
+      }
+    },
+    {
+      "identity" : "iosdropdown",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jriosdev/iOSDropDown.git",
+      "state" : {
+        "revision" : "945c4f1945ed37a31055e812a5ee11a3d06e88ab",
+        "version" : "0.4.0"
       }
     },
     {

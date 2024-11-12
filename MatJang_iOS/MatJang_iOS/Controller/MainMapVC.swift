@@ -10,9 +10,19 @@ import UIKit
 import KakaoMapsSDK
 import Then
 import Alamofire
+import iOSDropDown
 
-enum MapType{
+enum MapType: String{
     case lookAround, findMatjip
+    
+    var kind: String{
+        switch self{
+        case .findMatjip:
+            return "findMatjip"
+        case .lookAround:
+            return "lookAround"
+        }
+    }
 }
 
 protocol getSelectedMatjip: AnyObject {
@@ -81,6 +91,14 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         $0.borderStyle = .line
     }
     
+    private lazy var dropDown = DropDown(frame: CGRect(x: 100, y: 100, width: 200, height: 30)).then{
+        $0.optionArray = [MapType.findMatjip.kind, MapType.lookAround.kind]
+        $0.text = $0.optionArray[0]
+        $0.didSelect{(select, index, id) in
+            print("select: \(select)")
+        }
+    }
+    
     @objc func zoomDown(){
         let view = mapController?.getView("mapview") as! KakaoMap
         let position = view.getPosition(CGPoint(x: 1, y: 1))
@@ -131,6 +149,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         self.navigationItem.title = "맛 짱"
 //        self.navigationController?.navigationBar.backgroundColor = .white
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: sideMenuButton)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: dropDown)
         
         addDimmingView()
         
