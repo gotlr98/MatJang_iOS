@@ -23,81 +23,101 @@ class SignInView: UIViewController{
     let kakaoButton = UIButton()
     let appleButton = ASAuthorizationAppleIDButton(type: .signIn, style: .black)
     var sendUserModel: UserModelDelegate?
+    let defaults = UserDefaults.standard
     
     
     @objc func onPressKakaoButton(_sender: UIButton){
 
-        if (UserApi.isKakaoTalkLoginAvailable()) {
-            UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
-                if let error = error {
-                    print(error)
-                }
-                else {
-                    print("loginWithKakaoTalk() success.")
-
-                    //do something
-                    var token = oauthToken
-                    let db = Firestore.firestore().collection("users")
-                    
-                    UserApi.shared.me(){(user, error) in
-                        if let error = error{}
-                        else{
-                            var email = user?.kakaoAccount?.email
-                            print("\(email) email here")
-                            //                            self.sendUserModel?.sendUserInfo(user: UserModel(email: email ?? "" , socialType: SocialType.Kakao))
-                            let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
-                            
-                            vc.emailTest = email
-                            db.document("\(email)&kakao").setData([:])
-                            
-                            
-                            self.navigationController?.pushViewController(vc, animated: false)
-                        }
-                    }
-
-                   
-                    
-                }
-            }
-        }
-        else{
-            UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
+        
+            if (UserApi.isKakaoTalkLoginAvailable()) {
+                UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
                     if let error = error {
                         print(error)
                     }
                     else {
-                        print("loginWithKakaoAccount() success.")
+                        print("loginWithKakaoTalk() success.")
 
                         //do something
-                        _ = oauthToken
-//                        let mainVC = MainMap(nibName: nil, bundle: nil)
-//                        mainVC.modalPresentationStyle = .fullScreen
-//                        self.present(mainVC, animated: false)
-                        
-                        
                         var token = oauthToken
                         let db = Firestore.firestore().collection("users")
+                        let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
+
                         
                         UserApi.shared.me(){(user, error) in
                             if let error = error{}
                             else{
                                 var email = user?.kakaoAccount?.email
-    //                            self.sendUserModel?.sendUserInfo(user: UserModel(email: email ?? "" , socialType: SocialType.Kakao))
                                 print("\(email) email here")
-                                let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
+                                //                            self.sendUserModel?.sendUserInfo(user: UserModel(email: email ?? "" , socialType: SocialType.Kakao))
+                                
                                 
                                 vc.emailTest = email
                                 db.document("\(email)&kakao").setData([:])
+                                self.defaults.set("\(email)&kakao", forKey: "isAutoLogin")
+                                
                                 
                                 self.navigationController?.pushViewController(vc, animated: false)
                             }
                         }
+
+                       
                         
-//                        self.sendUserModel?.sendUserInfo(user: UserModel(email: "", socialType: SocialType.Kakao))
-//                        guard let nextVC = self.storyboard?.instantiateViewController(identifier: "MainMapVC") else {return}
-//                        self.navigationController?.pushViewController(nextVC, animated: false)
                     }
                 }
+            }
+            else{
+                UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
+                        if let error = error {
+                            print(error)
+                        }
+                        else {
+                            print("loginWithKakaoAccount() success.")
+
+                            //do something
+                            _ = oauthToken
+    //                        let mainVC = MainMap(nibName: nil, bundle: nil)
+    //                        mainVC.modalPresentationStyle = .fullScreen
+    //                        self.present(mainVC, animated: false)
+                            
+                            
+                            var token = oauthToken
+                            let db = Firestore.firestore().collection("users")
+                            let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
+
+                            
+                            UserApi.shared.me(){(user, error) in
+                                if let error = error{}
+                                else{
+                                    var email = user?.kakaoAccount?.email
+        //                            self.sendUserModel?.sendUserInfo(user: UserModel(email: email ?? "" , socialType: SocialType.Kakao))
+                                    print("\(email) email here")
+
+                                    
+                                    vc.emailTest = email
+                                    db.document("\(email)&kakao").setData([:])
+                                    self.defaults.set("\(email)&kakao", forKey: "isAutoLogin")
+                                    
+                                    self.navigationController?.pushViewController(vc, animated: false)
+                                }
+                            }
+                            
+    //                        self.sendUserModel?.sendUserInfo(user: UserModel(email: "", socialType: SocialType.Kakao))
+    //                        guard let nextVC = self.storyboard?.instantiateViewController(identifier: "MainMapVC") else {return}
+    //                        self.navigationController?.pushViewController(nextVC, animated: false)
+                        }
+                    }
+            }
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if let check = defaults.object(forKey: "isAutoLogin"){
+            print(check)
+            let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
+
+            vc.emailTest = check as! String
+            self.navigationController?.pushViewController(vc, animated: false)
+            
         }
     }
     
