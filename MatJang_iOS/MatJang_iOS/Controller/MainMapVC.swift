@@ -59,7 +59,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         $0.titleLabel?.font = .systemFont(ofSize: 15)
         $0.setTitle("-", for: .normal)
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(zoomDown))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(zoomOut))
         $0.addGestureRecognizer(tap)
         $0.isUserInteractionEnabled = true
     }
@@ -101,7 +101,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         }
     }
     
-    @objc func zoomDown(){
+    @objc func zoomOut(){
         let view = mapController?.getView("mapview") as! KakaoMap
         let position = view.getPosition(CGPoint(x: 1, y: 1))
         let curZoomLevel = view.zoomLevel
@@ -477,6 +477,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
     override func viewWillAppear(_ animated: Bool) {
         addObservers()
         _appear = true
+        print("view will appear")
         if mapController?.isEnginePrepared == false {
             mapController?.prepareEngine()
         }

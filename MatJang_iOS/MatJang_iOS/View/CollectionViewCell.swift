@@ -18,6 +18,7 @@ class CollectionViewCell: UICollectionViewCell{
         label.textColor = .black
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 20)
+        label.backgroundColor = .lightGray
         
         return label
     }()

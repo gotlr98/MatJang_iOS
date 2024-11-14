@@ -10,6 +10,9 @@ import KakaoSDKAuth
 import KakaoSDKUser
 import AuthenticationServices
 import JWTDecode
+import FirebaseFirestore
+import FirebaseFirestoreSwift
+
 
 protocol UserModelDelegate{
     func sendUserInfo(user: UserModel)
@@ -20,6 +23,7 @@ class SignInView: UIViewController{
     let kakaoButton = UIButton()
     let appleButton = ASAuthorizationAppleIDButton(type: .signIn, style: .black)
     var sendUserModel: UserModelDelegate?
+    
     
     @objc func onPressKakaoButton(_sender: UIButton){
 
@@ -33,6 +37,7 @@ class SignInView: UIViewController{
 
                     //do something
                     var token = oauthToken
+                    let db = Firestore.firestore().collection("users")
                     
                     UserApi.shared.me(){(user, error) in
                         if let error = error{}
@@ -43,6 +48,9 @@ class SignInView: UIViewController{
                             let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
                             
                             vc.emailTest = email
+                            db.document("\(email)&kakao").setData([:])
+                            
+                            
                             self.navigationController?.pushViewController(vc, animated: false)
                         }
                     }
@@ -66,6 +74,10 @@ class SignInView: UIViewController{
 //                        mainVC.modalPresentationStyle = .fullScreen
 //                        self.present(mainVC, animated: false)
                         
+                        
+                        var token = oauthToken
+                        let db = Firestore.firestore().collection("users")
+                        
                         UserApi.shared.me(){(user, error) in
                             if let error = error{}
                             else{
@@ -75,6 +87,8 @@ class SignInView: UIViewController{
                                 let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
                                 
                                 vc.emailTest = email
+                                db.document("\(email)&kakao").setData([:])
+                                
                                 self.navigationController?.pushViewController(vc, animated: false)
                             }
                         }
@@ -165,9 +179,6 @@ extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControll
                         }
                     }
                 
-                    
-                        
-                    
                 return
  
                 case let passwordCredential as ASPasswordCredential:
