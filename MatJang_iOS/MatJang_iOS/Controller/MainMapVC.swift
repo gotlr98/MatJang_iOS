@@ -243,7 +243,8 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         poi1?.show()
     }
     
-    func createPois(pointList: [[String]]) {
+    // 맛집찾기 드래그시 여러개의 Poi 생성
+    func createPois(matjipList: [Matjip]) {
         let view = mapController?.getView("mapview") as! KakaoMap
         let manager = view.getLabelManager()
         let layer = manager.getLabelLayer(layerID: "PoiLayer")   // 생성한 POI를 추가할 레이어를 가져온다.
@@ -260,43 +261,49 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         
         
         
-        for point in pointList{
-            findMapPoint.append(MapPoint(longitude: Double(point[0]) ?? 0, latitude: Double(point[1]) ?? 0))
+//        for point in pointList{
+//            
+//            findMapPoint.append(MapPoint(longitude: Double(point[0]) ?? 0, latitude: Double(point[1]) ?? 0))
+//            
+//        }
+        
+        for matjip in matjipList{
+            findMapPoint.append(MapPoint(longitude: Double(matjip.x ?? "") ?? 0 , latitude: Double(matjip.y ?? "") ?? 0))
         }
         let poi = layer?.addPois(option: poiOption, at: findMapPoint)
         
+        
         for a in poi!{
+//            if(self.categoryMatjipList.x)
+            let _ = a.addPoiTappedEventHandler(target: self, handler: MainMapViewController.poisTappedHandler(matjip: ))
             a.show()
         }
-        
-        
     }
     
     func onCameraStopped(_ param: CameraActionEventParam) {
-        
         
         
         if(maptype == .findMatjip){
             let mapView = mapController?.getView("mapview") as! KakaoMap
             let position = mapView.getPosition(CGPoint(x: 1, y: 1))
             
-            var pointList = Array(repeating: Array(repeating: "",count: 2),  count: self.categoryMatjipList.count)
-            var count = 0
+//            var pointList = Array(repeating: Array(repeating: "",count: 2),  count: self.categoryMatjipList.count)
+//            var count = 0
             
             Task{
                 
                 await getMatJipFromAPI(x: String(position.wgsCoord.longitude), y: String(position.wgsCoord.latitude))
             }
             
-                                            
-            for matjip in self.categoryMatjipList{
-                
-                pointList[count][0] = matjip.x ?? ""
-                pointList[count][1] = matjip.y ?? ""
-                count = count + 1
-                
-            }
-            createPois(pointList: pointList)
+//                                            
+//            for matjip in self.categoryMatjipList{
+//                
+//                pointList[count][0] = matjip.x ?? ""
+//                pointList[count][1] = matjip.y ?? ""
+//                count = count + 1
+//                
+//            }
+            createPois(matjipList: self.categoryMatjipList)
         }
         
         
@@ -306,8 +313,18 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
     
     // POI 탭 이벤트가 발생하고, 표시하고 있던 Poi를 숨긴다.
     func poiTappedHandler(_ param: PoiInteractionEventParam) {
+
+    }
+    
+    func poisTappedHandler(matjip: Matjip) {
 //        param.poiItem.hide()
-        print("poi Tapped!")
+        let vc = MatjipInfoBottomSheetView()
+        for matjip in self.categoryMatjipList{
+            
+            
+//            if matjip.x == param.kakaoMap.
+        }
+//        vc.matjip =
     }
     
     @objc func didDismissSearchResultView(_ notification: Notification){

@@ -191,8 +191,9 @@ extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControll
                             print("Decoded email: "+(decodedBody["email"] as? String ?? "n/a")   )
 //                            self.sendUserModel?.sendUserInfo(user: UserModel(email: decodedBody["email"] as? String ?? "", socialType: SocialType.Apple))
                             let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
-                            
-                            vc.emailTest = decodedBody["email"] as? String ?? "n/a"
+                            let db = Firestore.firestore().collection("users")
+                            db.document("\(decodedBody["email"])&apple").setData([:])
+                            self.defaults.set("\(decodedBody["email"])&apple", forKey: "isAutoLogin")
                             self.navigationController?.pushViewController(vc, animated: false)
                         } catch {
                             print("decoding failed")

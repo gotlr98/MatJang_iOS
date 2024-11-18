@@ -29,6 +29,7 @@
 		8A64FF652C57491400CAD716 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 8A64FF642C57491400CAD716 /* KakaoSDKAuth */; };
 		8A64FF672C5755F600CAD716 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A64FF662C5755F600CAD716 /* SignInView.swift */; };
 		8A6998B62CD0BF1C007CDAC2 /* SearchBtnGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6998B52CD0BF1C007CDAC2 /* SearchBtnGesture.swift */; };
+		8A6C52A92CE73A720006154A /* MatjipInfoBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6C52A82CE73A720006154A /* MatjipInfoBottomSheetView.swift */; };
 		8A6EA4DD2C63176800B34147 /* MainMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6EA4DC2C63176800B34147 /* MainMap.swift */; };
 		8A9746862CD899A800D7F6DC /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9746852CD899A800D7F6DC /* CollectionViewCell.swift */; };
 		8AA04E1A2CB78ADC00BECCCB /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA04E192CB78ADC00BECCCB /* UserModel.swift */; };
@@ -58,6 +59,7 @@
 		8A64FF5A2C5747D000CAD716 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		8A64FF662C5755F600CAD716 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		8A6998B52CD0BF1C007CDAC2 /* SearchBtnGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBtnGesture.swift; sourceTree = "<group>"; };
+		8A6C52A82CE73A720006154A /* MatjipInfoBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatjipInfoBottomSheetView.swift; sourceTree = "<group>"; };
 		8A6EA4DC2C63176800B34147 /* MainMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMap.swift; sourceTree = "<group>"; };
 		8A80273C2C58ABE600C1FEC0 /* MatJang_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MatJang_iOS.entitlements; sourceTree = "<group>"; };
 		8A9746852CD899A800D7F6DC /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 				8AD2FA822CBE657600AFD4C3 /* UserDetailView.swift */,
 				8A4B8D7C2CD4CF7D00E77A25 /* SearchResultView.swift */,
 				8A9746852CD899A800D7F6DC /* CollectionViewCell.swift */,
+				8A6C52A82CE73A720006154A /* MatjipInfoBottomSheetView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -301,6 +304,7 @@
 				8AA04E1A2CB78ADC00BECCCB /* UserModel.swift in Sources */,
 				8AF12D372CB4ED0000C99888 /* SideMenuVC.swift in Sources */,
 				8AA04E1C2CB78D3700BECCCB /* Matjip.swift in Sources */,
+				8A6C52A92CE73A720006154A /* MatjipInfoBottomSheetView.swift in Sources */,
 				8A64FF3C2C57452600CAD716 /* AppDelegate.swift in Sources */,
 				8A64FF672C5755F600CAD716 /* SignInView.swift in Sources */,
 				8A9746862CD899A800D7F6DC /* CollectionViewCell.swift in Sources */,
