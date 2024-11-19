@@ -244,6 +244,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
     }
     
     // 맛집찾기 드래그시 여러개의 Poi 생성
+    @MainActor
     func createPois(matjipList: [Matjip]) {
         let view = mapController?.getView("mapview") as! KakaoMap
         let manager = view.getLabelManager()
@@ -251,7 +252,9 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         let poiOption = PoiOptions(styleID: "customStyle1") // 생성할 POI의 Option을 지정하기 위한 자료를 담는 클래스를 생성. 사용할 스타일의 ID를 지정한다.
         poiOption.rank = 0
         poiOption.clickable = true // clickable 옵션을 true로 설정한다. default는 false로 설정되어있다.
+        layer?.clearAllItems()
         self.findMapPoint = []
+        
 //        let poi1 = layer?.addPoi(option: poiOption, at: MapPoint(longitude: Double(x) ?? 0, latitude: Double(y) ?? 0), callback: {(_ poi: (Poi?)) -> Void in
 //            print("create poi")
 //            }
@@ -266,21 +269,29 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
 //            findMapPoint.append(MapPoint(longitude: Double(point[0]) ?? 0, latitude: Double(point[1]) ?? 0))
 //            
 //        }
-        
+        var pois: [Poi] = []
+        var count = 0
         for matjip in matjipList{
-            findMapPoint.append(MapPoint(longitude: Double(matjip.x ?? "") ?? 0 , latitude: Double(matjip.y ?? "") ?? 0))
+            pois.append((layer?.addPoi(option: poiOption, at: MapPoint(longitude: Double(matjip.x ?? "") ?? 0 , latitude: Double(matjip.y ?? "") ?? 0)))!)
+            pois[count].addPoiTappedEventHandler(target: self, handler: MainMapViewController.poisTappedHandler)
+            pois[count].userObject = [matjip.x, matjip.y] as AnyObject
+            pois[count].show()
+            count += 1
+//            findMapPoint.append(MapPoint(longitude: Double(matjip.x ?? "") ?? 0 , latitude: Double(matjip.y ?? "") ?? 0))
         }
-        let poi = layer?.addPois(option: poiOption, at: findMapPoint)
+//        let poi = layer?.addPois(option: poiOption, at: findMapPoint)
         
         
-        for a in poi!{
-//            if(self.categoryMatjipList.x)
-            let _ = a.addPoiTappedEventHandler(target: self, handler: MainMapViewController.poisTappedHandler(matjip: ))
-            a.show()
-        }
+//        for a in poi!{
+//            a.userObject = a.position
+//            let b = a.addPoiTappedEventHandler(target: self, handler: MainMapViewController.poisTappedHandler)
+//            
+//            
+//            a.show()
+//        }
     }
     
-    func onCameraStopped(_ param: CameraActionEventParam) {
+    func onCameraStopped(_ param: CameraActionEventParam){
         
         
         if(maptype == .findMatjip){
@@ -291,7 +302,6 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
 //            var count = 0
             
             Task{
-                
                 await getMatJipFromAPI(x: String(position.wgsCoord.longitude), y: String(position.wgsCoord.latitude))
             }
             
@@ -304,6 +314,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
 //                
 //            }
             createPois(matjipList: self.categoryMatjipList)
+            
         }
         
         
@@ -313,18 +324,23 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
     
     // POI 탭 이벤트가 발생하고, 표시하고 있던 Poi를 숨긴다.
     func poiTappedHandler(_ param: PoiInteractionEventParam) {
-
+        
     }
     
-    func poisTappedHandler(matjip: Matjip) {
-//        param.poiItem.hide()
+    func poisTappedHandler(_ param: PoiInteractionEventParam) {
+        
         let vc = MatjipInfoBottomSheetView()
+        
+
+        let position = param.poiItem.userObject as! [String]
         for matjip in self.categoryMatjipList{
-            
-            
-//            if matjip.x == param.kakaoMap.
+            if(matjip.x == position[0] && matjip.y == position[1]){
+                vc.matjip = matjip
+                self.present(vc, animated: true)
+            }
         }
-//        vc.matjip =
+        
+        
     }
     
     @objc func didDismissSearchResultView(_ notification: Notification){
@@ -349,7 +365,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         let parameters = ["category_group_code": "FD6", "x": x, "y": y, "radius": "1000"]
         let headers: HTTPHeaders = ["Authorization": "KakaoAK \(Bundle.main.infoDictionary?["KAKAO_REST_API_KEY"] as? String ?? "")"]
         Task{
-            await AF.request(url, method: .get, parameters: parameters, headers: headers)
+            AF.request(url, method: .get, parameters: parameters, headers: headers)
                 .validate(statusCode: 200..<500)
                 .responseJSON{response in
                     switch response.result{

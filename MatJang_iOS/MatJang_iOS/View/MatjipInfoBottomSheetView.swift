@@ -35,17 +35,19 @@ class MatjipInfoBottomSheetView: UIViewController{
         view.addSubview(category)
         view.addSubview(road_address)
         
+        self.view.backgroundColor = .white
+        
         place_name.snp.makeConstraints({ make in
             make.top.equalTo(self.view.snp_topMargin)
         })
         
-        category.snp.makeConstraints({ make in
-            make.top.equalTo(self.view.snp_topMargin)
-        })
-        
-        road_address.snp.makeConstraints({ make in
-            make.top.equalTo(self.view.snp_topMargin)
-        })
-        
+//        category.snp.makeConstraints({ make in
+//            make.top.equalTo(self.view.snp_topMargin)
+//        })
+//        
+//        road_address.snp.makeConstraints({ make in
+//            make.top.equalTo(self.view.snp_topMargin)
+//        })
+//        
     }
 }
