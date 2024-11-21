@@ -16,17 +16,17 @@ class MatjipInfoBottomSheetView: UIViewController{
     
     private lazy var place_name = UILabel().then{
         $0.text = matjip?.place_name
-        $0.font = .systemFont(ofSize: 10, weight: .medium)
+        $0.font = .systemFont(ofSize: 20, weight: .medium)
     }
     
     private lazy var category = UILabel().then{
         $0.text = matjip?.category_name
-        $0.font = .systemFont(ofSize: 10, weight: .medium)
+        $0.font = .systemFont(ofSize: 15, weight: .medium)
     }
     
     private lazy var road_address = UILabel().then{
         $0.text = matjip?.address_name
-        $0.font = .systemFont(ofSize: 8, weight: .medium)
+        $0.font = .systemFont(ofSize: 13, weight: .medium)
     }
     
     override func viewDidLoad(){

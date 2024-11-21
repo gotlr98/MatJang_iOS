@@ -311,6 +311,15 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         for matjip in self.categoryMatjipList{
             if(matjip.x == position[0] && matjip.y == position[1]){
                 vc.matjip = matjip
+                vc.modalPresentationStyle = .pageSheet
+                let multiplier = 0.25
+                let fraction = UISheetPresentationController.Detent.custom { context in
+                    // height is the view.frame.height of the view controller which presents this bottom sheet
+                    self.view.frame.height * multiplier
+                }
+                if let sheet = vc.sheetPresentationController{
+                    sheet.detents = [fraction]
+                }
                 self.present(vc, animated: true)
             }
         }
