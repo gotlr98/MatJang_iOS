@@ -286,7 +286,6 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
                 do{
                     self.categoryMatjipList = try await getMatJipFromAPI(x: String(position.wgsCoord.longitude), y: String(position.wgsCoord.latitude))
                     
-                    print(self.categoryMatjipList)
                 }catch{
                     print("error")
                 }
@@ -312,7 +311,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
             if(matjip.x == position[0] && matjip.y == position[1]){
                 vc.matjip = matjip
                 vc.modalPresentationStyle = .pageSheet
-                let multiplier = 0.25
+                let multiplier = 0.2
                 let fraction = UISheetPresentationController.Detent.custom { context in
                     // height is the view.frame.height of the view controller which presents this bottom sheet
                     self.view.frame.height * multiplier

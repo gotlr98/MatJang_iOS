@@ -31,6 +31,7 @@
 		8A6998B62CD0BF1C007CDAC2 /* SearchBtnGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6998B52CD0BF1C007CDAC2 /* SearchBtnGesture.swift */; };
 		8A6C52A92CE73A720006154A /* MatjipInfoBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6C52A82CE73A720006154A /* MatjipInfoBottomSheetView.swift */; };
 		8A6EA4DD2C63176800B34147 /* MainMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6EA4DC2C63176800B34147 /* MainMap.swift */; };
+		8A8D2CE12CEF09F0004231CB /* AddBookmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8D2CE02CEF09F0004231CB /* AddBookmarkView.swift */; };
 		8A9746862CD899A800D7F6DC /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9746852CD899A800D7F6DC /* CollectionViewCell.swift */; };
 		8AA04E1A2CB78ADC00BECCCB /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA04E192CB78ADC00BECCCB /* UserModel.swift */; };
 		8AA04E1C2CB78D3700BECCCB /* Matjip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA04E1B2CB78D3700BECCCB /* Matjip.swift */; };
@@ -62,6 +63,7 @@
 		8A6C52A82CE73A720006154A /* MatjipInfoBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatjipInfoBottomSheetView.swift; sourceTree = "<group>"; };
 		8A6EA4DC2C63176800B34147 /* MainMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMap.swift; sourceTree = "<group>"; };
 		8A80273C2C58ABE600C1FEC0 /* MatJang_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MatJang_iOS.entitlements; sourceTree = "<group>"; };
+		8A8D2CE02CEF09F0004231CB /* AddBookmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookmarkView.swift; sourceTree = "<group>"; };
 		8A9746852CD899A800D7F6DC /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		8AA04E192CB78ADC00BECCCB /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		8AA04E1B2CB78D3700BECCCB /* Matjip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matjip.swift; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 				8A4B8D7C2CD4CF7D00E77A25 /* SearchResultView.swift */,
 				8A9746852CD899A800D7F6DC /* CollectionViewCell.swift */,
 				8A6C52A82CE73A720006154A /* MatjipInfoBottomSheetView.swift */,
+				8A8D2CE02CEF09F0004231CB /* AddBookmarkView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -306,6 +309,7 @@
 				8AA04E1C2CB78D3700BECCCB /* Matjip.swift in Sources */,
 				8A6C52A92CE73A720006154A /* MatjipInfoBottomSheetView.swift in Sources */,
 				8A64FF3C2C57452600CAD716 /* AppDelegate.swift in Sources */,
+				8A8D2CE12CEF09F0004231CB /* AddBookmarkView.swift in Sources */,
 				8A64FF672C5755F600CAD716 /* SignInView.swift in Sources */,
 				8A9746862CD899A800D7F6DC /* CollectionViewCell.swift in Sources */,
 				8A64FF3E2C57452600CAD716 /* SceneDelegate.swift in Sources */,
