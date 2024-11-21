@@ -10,10 +10,16 @@ import UIKit
 
 public struct MatjipList: Codable{
     
-    var matjipList: [Matjip]
+    var documents: [Matjip]
 }
+
+//public struct MatjipResponse: Codable{
+//    
+//    var documents: [String: Any]?
+//    
+//}
 public struct Matjip: Codable{
-    
+
     var place_name: String?
     var x: String?
     var y: String?

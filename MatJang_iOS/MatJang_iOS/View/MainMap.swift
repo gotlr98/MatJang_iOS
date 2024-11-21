@@ -15,7 +15,7 @@ class MainMap: MainMapViewController {
     
     override func addViews() {
         let defaultPosition: MapPoint = MapPoint(longitude: 127.108678, latitude: 37.402001)
-        let mapviewInfo: MapviewInfo = MapviewInfo(viewName: "mapview", viewInfoName: "map", defaultPosition: defaultPosition)
+        let mapviewInfo: MapviewInfo = MapviewInfo(viewName: "mapview", viewInfoName: "map", defaultPosition: defaultPosition, defaultLevel: 15)
         
         mapController?.addView(mapviewInfo)
     }

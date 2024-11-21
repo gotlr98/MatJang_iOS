@@ -98,6 +98,12 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         $0.backgroundColor = .lightGray
         $0.didSelect{(select, index, id) in
             print("select: \(select)")
+            if(select == MapType.lookAround.kind){
+                let view = self.mapController?.getView("mapview") as! KakaoMap
+                let manager = view.getLabelManager()
+                let layer = manager.getLabelLayer(layerID: "PoiLayer")
+                layer?.clearAllItems()
+            }
         }
     }
     
@@ -244,8 +250,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
     }
     
     // 맛집찾기 드래그시 여러개의 Poi 생성
-    @MainActor
-    func createPois(matjipList: [Matjip]) {
+    func createPois(matjipList: [Matjip])async{
         let view = mapController?.getView("mapview") as! KakaoMap
         let manager = view.getLabelManager()
         let layer = manager.getLabelLayer(layerID: "PoiLayer")   // 생성한 POI를 추가할 레이어를 가져온다.
@@ -254,72 +259,42 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         poiOption.clickable = true // clickable 옵션을 true로 설정한다. default는 false로 설정되어있다.
         layer?.clearAllItems()
         self.findMapPoint = []
-        
-//        let poi1 = layer?.addPoi(option: poiOption, at: MapPoint(longitude: Double(x) ?? 0, latitude: Double(y) ?? 0), callback: {(_ poi: (Poi?)) -> Void in
-//            print("create poi")
-//            }
-//        )
-//        let _ = poi1?.addPoiTappedEventHandler(target: self, handler: MainMapViewController.poiTappedHandler) // poi tap event handler를 추가한다.
-//        poi1?.show()
-        
-        
-        
-//        for point in pointList{
-//            
-//            findMapPoint.append(MapPoint(longitude: Double(point[0]) ?? 0, latitude: Double(point[1]) ?? 0))
-//            
-//        }
+
         var pois: [Poi] = []
         var count = 0
-        for matjip in matjipList{
-            pois.append((layer?.addPoi(option: poiOption, at: MapPoint(longitude: Double(matjip.x ?? "") ?? 0 , latitude: Double(matjip.y ?? "") ?? 0)))!)
-            pois[count].addPoiTappedEventHandler(target: self, handler: MainMapViewController.poisTappedHandler)
-            pois[count].userObject = [matjip.x, matjip.y] as AnyObject
-            pois[count].show()
-            count += 1
-//            findMapPoint.append(MapPoint(longitude: Double(matjip.x ?? "") ?? 0 , latitude: Double(matjip.y ?? "") ?? 0))
+        Task{
+            for matjip in matjipList{
+                pois.append((layer?.addPoi(option: poiOption, at: MapPoint(longitude: Double(matjip.x ?? "") ?? 0 , latitude: Double(matjip.y ?? "") ?? 0)))!)
+                pois[count].addPoiTappedEventHandler(target: self, handler: MainMapViewController.poisTappedHandler)
+                pois[count].userObject = [matjip.x, matjip.y] as AnyObject
+                pois[count].show()
+                count += 1
+            }
         }
-//        let poi = layer?.addPois(option: poiOption, at: findMapPoint)
-        
-        
-//        for a in poi!{
-//            a.userObject = a.position
-//            let b = a.addPoiTappedEventHandler(target: self, handler: MainMapViewController.poisTappedHandler)
-//            
-//            
-//            a.show()
-//        }
+
     }
     
     func onCameraStopped(_ param: CameraActionEventParam){
         
         
-        if(maptype == .findMatjip){
+        if(dropDown.selectedIndex == 0){
             let mapView = mapController?.getView("mapview") as! KakaoMap
-            let position = mapView.getPosition(CGPoint(x: 1, y: 1))
-            
-//            var pointList = Array(repeating: Array(repeating: "",count: 2),  count: self.categoryMatjipList.count)
-//            var count = 0
+            let position = mapView.getPosition(CGPoint(x: 0.5, y: 0.5))
+
             
             Task{
-                await getMatJipFromAPI(x: String(position.wgsCoord.longitude), y: String(position.wgsCoord.latitude))
+                do{
+                    self.categoryMatjipList = try await getMatJipFromAPI(x: String(position.wgsCoord.longitude), y: String(position.wgsCoord.latitude))
+                    
+                    print(self.categoryMatjipList)
+                }catch{
+                    print("error")
+                }
+                await createPois(matjipList: self.categoryMatjipList)
+
             }
             
-//                                            
-//            for matjip in self.categoryMatjipList{
-//                
-//                pointList[count][0] = matjip.x ?? ""
-//                pointList[count][1] = matjip.y ?? ""
-//                count = count + 1
-//                
-//            }
-            createPois(matjipList: self.categoryMatjipList)
-            
         }
-        
-        
-        
-
     }
     
     // POI 탭 이벤트가 발생하고, 표시하고 있던 Poi를 숨긴다.
@@ -357,42 +332,66 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         
     }
     
-    func getMatJipFromAPI(x: String, y: String) async{
+    func getMatJipFromAPI(x: String, y: String) async throws -> [Matjip]{
         
         self.categoryMatjipList = []
+        
         
         let url = "https://dapi.kakao.com/v2/local/search/category.json"
         let parameters = ["category_group_code": "FD6", "x": x, "y": y, "radius": "1000"]
         let headers: HTTPHeaders = ["Authorization": "KakaoAK \(Bundle.main.infoDictionary?["KAKAO_REST_API_KEY"] as? String ?? "")"]
-        Task{
-            AF.request(url, method: .get, parameters: parameters, headers: headers)
-                .validate(statusCode: 200..<500)
-                .responseJSON{response in
-                    switch response.result{
-                    case .success(let data):
-                        do {
-                            let value = [data]
-                            for val in value{
-                                if let obj = val as? [String: Any]{
-                                    if let convData = obj["documents"] as? [[String:String]]{
-                                        for temp in convData{
-                                            self.categoryMatjipList.append(Matjip(place_name: temp["place_name"], x: temp["x"], y: temp["y"], address_name: temp["road_address_name"], category_name: temp["category_name"]))
-                                        }
-                                    }
-                                    
-                                }
-                            }
-                        }
-                        break
-                    case .failure(let error):
-                        print(error)
-                        break
-
-                    }
-                }
-        }
         
+        
+        let dataTask = AF.request(url, method: .get, parameters: parameters, headers: headers).serializingDecodable(MatjipList.self)
+        
+        switch await dataTask.result {
+        case .success(let data):
+            
+            return data.documents
+        case .failure(let error):
+            print(error)
+            throw error
+        }
+    
     }
+    
+//    func getMatJipFromAPI(x: String, y: String) async{
+//        
+//        self.categoryMatjipList = []
+//                
+//        let url = "https://dapi.kakao.com/v2/local/search/category.json"
+//        let parameters = ["category_group_code": "FD6", "x": x, "y": y, "radius": "1000"]
+//        let headers: HTTPHeaders = ["Authorization": "KakaoAK \(Bundle.main.infoDictionary?["KAKAO_REST_API_KEY"] as? String ?? "")"]
+//        Task{
+//            AF.request(url, method: .get, parameters: parameters, headers: headers)
+//                .validate(statusCode: 200..<500)
+//                .responseJSON{response in
+//                    switch response.result{
+//                    case .success(let data):
+//                        do {
+//                            let value = [data]
+//                            for val in value{
+//                                if let obj = val as? [String: Any]{
+//                                    if let convData = obj["documents"] as? [[String:String]]{
+//                                        for temp in convData{
+//                                            self.categoryMatjipList.append(Matjip(place_name: temp["place_name"], x: temp["x"], y: temp["y"], address_name: temp["road_address_name"], category_name: temp["category_name"]))
+//                                        }
+//                                    }
+//                                    
+//                                }
+//                            }
+//                        }
+//                        break
+//                    case .failure(let error):
+//                        print(error)
+//                        break
+//
+//                    }
+//                }
+//        }
+//        
+//        
+//    }
     
     @objc func searchMatJipFromAPI(){
         
