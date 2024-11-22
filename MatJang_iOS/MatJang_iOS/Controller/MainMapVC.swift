@@ -96,6 +96,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         $0.optionArray = [MapType.findMatjip.kind, MapType.lookAround.kind]
         $0.text = $0.optionArray[0]
         $0.backgroundColor = .lightGray
+        $0.selectedIndex = 0
         $0.didSelect{(select, index, id) in
             print("select: \(select)")
             if(select == MapType.lookAround.kind){

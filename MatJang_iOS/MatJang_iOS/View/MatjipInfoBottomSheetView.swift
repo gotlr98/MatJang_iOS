@@ -45,7 +45,7 @@ class MatjipInfoBottomSheetView: UIViewController{
         let multiplier = 1.0
         let fraction = UISheetPresentationController.Detent.custom { context in
             // height is the view.frame.height of the view controller which presents this bottom sheet
-            self.bookmark.frame.height * multiplier
+            self.view.frame.height * multiplier
         }
         if let sheet = vc.sheetPresentationController{
             sheet.detents = [fraction]
