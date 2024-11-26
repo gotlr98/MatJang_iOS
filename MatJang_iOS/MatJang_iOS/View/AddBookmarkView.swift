@@ -43,7 +43,8 @@ class AddBookmarkView: UIViewController{
             
             let user_email = UserDefaults.standard.string(forKey: "isAutoLogin")
             
-            self.db.collection("users").document(user_email ?? "").updateData(["bookmark":[text:[]]])
+            self.db.collection("users").document(user_email ?? "").collection("bookmark").document(text).updateData([:])
+            
             
             print(text)
             
@@ -85,6 +86,24 @@ class AddBookmarkView: UIViewController{
     override func viewDidLoad(){
         self.view.backgroundColor = .white
         
+        let user_email = UserDefaults.standard.string(forKey: "isAutoLogin")
+        
+        Task{
+            self.db.collection("users").document(user_email ?? "").collection("bookmark").getDocuments{ (snapshot, err) in
+                if let err = err{
+                    print(err)
+                }
+                else{
+                    guard let snapshot = snapshot else{return}
+                    for document in snapshot.documents{
+                        
+                        self.addBookmarkName.append(document.documentID)
+                        print("await \(document.documentID)")
+                    }
+                }
+            }
+        }
+                
         self.view.addSubview(addButton)
         
         addButton.snp.makeConstraints({ make in
@@ -92,14 +111,29 @@ class AddBookmarkView: UIViewController{
             make.centerX.equalTo(self.view.snp.centerX)
         })
         
+        
+        
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
         var count = 0
         
-        if(!self.addBookmarkName.isEmpty){
-            bookmarkListButton.append(UIButton(frame: CGRect(x: 10, y: 10, width: 50, height: 50)))
+        if(!(self.addBookmarkName.isEmpty)){
+            bookmarkListButton.append(UIButton())
+            print("condition ok")
             for te in bookmarkListButton{
                 self.view.addSubview(te)
                 te.setTitle(addBookmarkName[count], for: .normal)
+                te.setTitleColor(.black, for: .normal)
+                let gesture = CustomGestureRecognizer(target: self, action: #selector(touchBookmarkListener(gesture: )))
+                gesture.touchString = addBookmarkName[count]
+                te.addGestureRecognizer(gesture)
+                
                 te.snp.makeConstraints({ make in
+                    make.width.equalTo(self.view.snp.width)
+                    make.height.equalTo(50)
                     make.top.equalTo(self.addButton.snp.bottom).offset(10)
                 })
                 count += 1
@@ -108,4 +142,12 @@ class AddBookmarkView: UIViewController{
             self.view.layoutIfNeeded()
         }
     }
+    
+    @objc func touchBookmarkListener(gesture: CustomGestureRecognizer){
+        print(gesture.touchString)
+    }
+}
+
+class CustomGestureRecognizer: UIGestureRecognizer{
+    var touchString: String?
 }
