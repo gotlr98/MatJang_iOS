@@ -43,8 +43,8 @@ class AddBookmarkView: UIViewController{
             
             let user_email = UserDefaults.standard.string(forKey: "isAutoLogin")
             
-            self.db.collection("users").document(user_email ?? "").collection("bookmark").document(text).updateData([:])
-            
+//            self.db.collection("users").document(user_email ?? "").collection("bookmark").document(text).updateData([:])
+            self.db.collection("users").document(user_email ?? "").collection("bookmark").document(text).setData([:])
             
             print(text)
             
@@ -121,21 +121,34 @@ class AddBookmarkView: UIViewController{
         var count = 0
         
         if(!(self.addBookmarkName.isEmpty)){
-            bookmarkListButton.append(UIButton())
-            print("condition ok")
+            for i in 0..<addBookmarkName.count{
+                bookmarkListButton.append(UIButton())
+            }
             for te in bookmarkListButton{
                 self.view.addSubview(te)
                 te.setTitle(addBookmarkName[count], for: .normal)
                 te.setTitleColor(.black, for: .normal)
                 let gesture = CustomGestureRecognizer(target: self, action: #selector(touchBookmarkListener(gesture: )))
                 gesture.touchString = addBookmarkName[count]
+                gesture.direction = .up
                 te.addGestureRecognizer(gesture)
                 
-                te.snp.makeConstraints({ make in
-                    make.width.equalTo(self.view.snp.width)
-                    make.height.equalTo(50)
-                    make.top.equalTo(self.addButton.snp.bottom).offset(10)
-                })
+                if(count == 0){
+                    te.snp.makeConstraints({ make in
+                        make.width.equalTo(self.view.snp.width)
+                        make.height.equalTo(50)
+                        make.top.equalTo(self.addButton.snp.bottom).offset(10)
+                    })
+                }
+                else{
+                    te.snp.makeConstraints({ make in
+                        make.width.equalTo(self.view.snp.width)
+                        make.height.equalTo(50)
+                        make.top.equalTo(self.bookmarkListButton[count-1].snp.bottom).offset(10)
+                    })
+                }
+                
+                
                 count += 1
             }
             
@@ -148,6 +161,6 @@ class AddBookmarkView: UIViewController{
     }
 }
 
-class CustomGestureRecognizer: UIGestureRecognizer{
+class CustomGestureRecognizer: UISwipeGestureRecognizer{
     var touchString: String?
 }
