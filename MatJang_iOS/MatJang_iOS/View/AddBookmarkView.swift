@@ -14,6 +14,7 @@ import FirebaseFirestore
 class AddBookmarkView: UIViewController{
     
     var addBookmarkName: [String] = []
+    var select_matjip: Matjip?
     
     let db = Firestore.firestore()
     
@@ -98,7 +99,6 @@ class AddBookmarkView: UIViewController{
                     for document in snapshot.documents{
                         
                         self.addBookmarkName.append(document.documentID)
-                        print("await \(document.documentID)")
                     }
                 }
             }
@@ -110,9 +110,6 @@ class AddBookmarkView: UIViewController{
             make.top.equalTo(self.view.snp.top).offset(20)
             make.centerX.equalTo(self.view.snp.centerX)
         })
-        
-        
-        
         
     }
     
@@ -128,10 +125,9 @@ class AddBookmarkView: UIViewController{
                 self.view.addSubview(te)
                 te.setTitle(addBookmarkName[count], for: .normal)
                 te.setTitleColor(.black, for: .normal)
-                let gesture = CustomGestureRecognizer(target: self, action: #selector(touchBookmarkListener(gesture: )))
-                gesture.touchString = addBookmarkName[count]
-                gesture.direction = .up
-                te.addGestureRecognizer(gesture)
+                te.layer.borderWidth = 1
+                te.addTarget(self, action: #selector(self.touchBookmarkListener), for: .touchUpInside)
+                te.tag = count
                 
                 if(count == 0){
                     te.snp.makeConstraints({ make in
@@ -147,8 +143,6 @@ class AddBookmarkView: UIViewController{
                         make.top.equalTo(self.bookmarkListButton[count-1].snp.bottom).offset(10)
                     })
                 }
-                
-                
                 count += 1
             }
             
@@ -156,11 +150,23 @@ class AddBookmarkView: UIViewController{
         }
     }
     
-    @objc func touchBookmarkListener(gesture: CustomGestureRecognizer){
-        print(gesture.touchString)
-    }
-}
+    @objc func touchBookmarkListener(_ sender: UIButton){
+        let bookmarkAddAlert = UIAlertController(title: "등록하시겠습니까?", message: "", preferredStyle: .alert)
 
-class CustomGestureRecognizer: UISwipeGestureRecognizer{
-    var touchString: String?
+        let okAction = UIAlertAction(title: "예", style: .default){ action in
+                        
+            let user_email = UserDefaults.standard.string(forKey: "isAutoLogin")
+            
+            let title = self.bookmarkListButton[sender.tag].titleLabel?.text
+            self.db.collection("users").document(user_email ?? "").collection("bookmark").document(title ?? "").updateData(
+                [0:["place_name":self.select_matjip?.place_name, "address_name":self.select_matjip?.address_name]])
+        }
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        
+        bookmarkAddAlert.addAction(okAction)
+        bookmarkAddAlert.addAction(cancelAction)
+        
+        self.present(bookmarkAddAlert, animated: true)
+    }
 }

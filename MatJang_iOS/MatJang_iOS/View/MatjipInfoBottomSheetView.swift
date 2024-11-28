@@ -42,6 +42,7 @@ class MatjipInfoBottomSheetView: UIViewController{
     @objc func bookmarkTapped(){
         let vc = AddBookmarkView()
         vc.modalPresentationStyle = .pageSheet
+        vc.select_matjip = self.matjip
         let multiplier = 1.0
         let fraction = UISheetPresentationController.Detent.custom { context in
             // height is the view.frame.height of the view controller which presents this bottom sheet
