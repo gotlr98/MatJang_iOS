@@ -158,8 +158,10 @@ class AddBookmarkView: UIViewController{
             let user_email = UserDefaults.standard.string(forKey: "isAutoLogin")
             
             let title = self.bookmarkListButton[sender.tag].titleLabel?.text
-            self.db.collection("users").document(user_email ?? "").collection("bookmark").document(title ?? "").updateData(
-                [0:["place_name":self.select_matjip?.place_name, "address_name":self.select_matjip?.address_name]])
+            self.db.collection("users").document(user_email ?? "").collection("bookmark").document(title ?? "").setData([
+                self.select_matjip?.place_name ?? "":["x": self.select_matjip?.x, "y": self.select_matjip?.y, "address_name": self.select_matjip?.road_address_name, "category_name": self.select_matjip?.category_name]
+            ], merge: true)
+
         }
         
         let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)

@@ -23,7 +23,7 @@ public struct Matjip: Codable{
     var place_name: String?
     var x: String?
     var y: String?
-    var address_name: String?
+    var road_address_name: String?
     var category_name: String?
     
 }

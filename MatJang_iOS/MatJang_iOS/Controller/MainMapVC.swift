@@ -425,7 +425,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
                                 if let obj = val as? [String: Any]{
                                     if let convData = obj["documents"] as? [[String:String]]{
                                         for temp in convData{
-                                            self.searchMatjipList.append(Matjip(place_name: temp["place_name"], x: temp["x"], y: temp["y"], address_name: temp["road_address_name"], category_name: temp["category_name"]))
+                                            self.searchMatjipList.append(Matjip(place_name: temp["place_name"], x: temp["x"], y: temp["y"], road_address_name: temp["road_address_name"], category_name: temp["category_name"]))
                                             
                                         }
                                     }

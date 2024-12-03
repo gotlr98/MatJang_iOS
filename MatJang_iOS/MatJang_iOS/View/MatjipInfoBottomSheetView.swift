@@ -26,7 +26,7 @@ class MatjipInfoBottomSheetView: UIViewController{
     }
     
     private lazy var road_address = UILabel().then{
-        $0.text = matjip?.address_name
+        $0.text = matjip?.road_address_name
         $0.font = .systemFont(ofSize: 13, weight: .medium)
     }
 
