@@ -9,10 +9,12 @@ import Foundation
 import UIKit
 import Then
 import SnapKit
+import FirebaseFirestore
 
 class MatjipInfoBottomSheetView: UIViewController{
     
     var matjip: Matjip?
+    var isBookmarked: [String:Bool]?
     
     private lazy var place_name = UILabel().then{
         $0.text = matjip?.place_name
@@ -60,6 +62,9 @@ class MatjipInfoBottomSheetView: UIViewController{
         view.addSubview(category)
         view.addSubview(road_address)
         view.addSubview(bookmark)
+        
+        let db = Firestore.firestore()
+        
         
         self.view.backgroundColor = .white
         

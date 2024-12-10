@@ -12,6 +12,7 @@ import Then
 import Alamofire
 import iOSDropDown
 import SafeAreaBrush
+import FirebaseFirestore
 
 enum MapType: String{
     case lookAround, findMatjip
@@ -19,9 +20,9 @@ enum MapType: String{
     var kind: String{
         switch self{
         case .findMatjip:
-            return "findMatjip"
+            return "맛집찾기"
         case .lookAround:
-            return "lookAround"
+            return "둘러보기"
         }
     }
 }
@@ -43,6 +44,9 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
     var searchMatjipList: [Matjip] = []
     var categoryMatjipList: [Matjip] = []
     var selectedMatjip: [String:String] = [:]
+    let db = Firestore.firestore()
+    
+    var user: UserModel?
     
     
     private lazy var sideMenuButton = UIImageView().then{
@@ -156,7 +160,6 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
 //        self.navigationItem.hidesBackButton = true
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.navigationBar.backgroundColor = .lightGray
-        self.navigationItem.title = "맛 짱"
 //        self.navigationController?.navigationBar.backgroundColor = .white
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: sideMenuButton)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: dropDown)
@@ -302,9 +305,12 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         
     }
     
-    func poisTappedHandler(_ param: PoiInteractionEventParam) {
+    func poisTappedHandler(_ param: PoiInteractionEventParam){
         
         let vc = MatjipInfoBottomSheetView()
+        
+        let user_email = UserDefaults.standard.string(forKey: "isAutoLogin")
+        
         
 
         let position = param.poiItem.userObject as! [String]
@@ -525,6 +531,22 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         
         if mapController?.isEngineActive == false {
             mapController?.activateEngine()
+        }
+        
+        Task{
+            await self.db.collection("users").document(self.user!.email).collection("bookmark").getDocuments{ (snapshot, err) in
+                if let err = err{
+                    print(err)
+                }
+                else{
+                    guard let snapshot = snapshot else{return}
+                    for document in snapshot.documents{
+                        
+                        self.user?.bookmark_list.append(document.documentID)
+                        print(document.data())
+                    }
+                }
+            }
         }
     }
         

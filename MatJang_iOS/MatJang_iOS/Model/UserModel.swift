@@ -17,6 +17,7 @@ public struct UserModel{
     var email: String
     var socialType: SocialType = .Guest
     var matjip_list: [String: [Matjip]] = [:]
+    var bookmark_list: [String] = []
     var review: [String: [String: [Double]]] = [:]
     var following: [String] = []
     var follower: [String] = []

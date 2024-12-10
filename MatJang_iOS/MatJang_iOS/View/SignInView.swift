@@ -25,6 +25,8 @@ class SignInView: UIViewController{
     var sendUserModel: UserModelDelegate?
     let defaults = UserDefaults.standard
     
+    var user: UserModel = UserModel(email: "", socialType: .Guest)
+    
     
     @objc func onPressKakaoButton(_sender: UIButton){
 
@@ -50,8 +52,10 @@ class SignInView: UIViewController{
                                 print("\(email) email here")
                                 //                            self.sendUserModel?.sendUserInfo(user: UserModel(email: email ?? "" , socialType: SocialType.Kakao))
                                 
-                                
+                                self.user.email = email ?? ""
+                                self.user.socialType = .Kakao
                                 vc.emailTest = email
+                                vc.user = self.user
                                 db.document("\(email)&kakao").setData([:])
                                 self.defaults.set("\(email)&kakao", forKey: "isAutoLogin")
                                 
@@ -92,7 +96,10 @@ class SignInView: UIViewController{
         //                            self.sendUserModel?.sendUserInfo(user: UserModel(email: email ?? "" , socialType: SocialType.Kakao))
                                     print("\(email) email here")
 
+                                    self.user.email = email ?? ""
+                                    self.user.socialType = .Kakao
                                     
+                                    vc.user = self.user
                                     vc.emailTest = email
                                     db.document("\(email)&kakao").setData([:])
                                     self.defaults.set("\(email)&kakao", forKey: "isAutoLogin")
@@ -114,8 +121,11 @@ class SignInView: UIViewController{
         if let check = defaults.object(forKey: "isAutoLogin"){
             print(check)
             let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
+            
+            self.user.email = check as! String
 
             vc.emailTest = check as! String
+            vc.user = self.user
             self.navigationController?.pushViewController(vc, animated: false)
             
         }
@@ -193,6 +203,8 @@ extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControll
                             let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
                             let db = Firestore.firestore().collection("users")
                             db.document("\(decodedBody["email"])&apple").setData([:])
+                            self.user.email = decodedBody["email"] as! String
+                            self.user.socialType = .Apple
                             self.defaults.set("\(decodedBody["email"])&apple", forKey: "isAutoLogin")
                             self.navigationController?.pushViewController(vc, animated: false)
                         } catch {
@@ -212,6 +224,8 @@ extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControll
                     
                     let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
                     
+                    self.user.email = username ?? ""
+                    self.user.socialType = .Apple
                     vc.emailTest = username
                     self.navigationController?.pushViewController(vc, animated: false)
                 

@@ -90,7 +90,7 @@ class AddBookmarkView: UIViewController{
         let user_email = UserDefaults.standard.string(forKey: "isAutoLogin")
         
         Task{
-            self.db.collection("users").document(user_email ?? "").collection("bookmark").getDocuments{ (snapshot, err) in
+            await self.db.collection("users").document(user_email ?? "").collection("bookmark").getDocuments{ (snapshot, err) in
                 if let err = err{
                     print(err)
                 }
