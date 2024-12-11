@@ -54,7 +54,15 @@ class SignInView: UIViewController{
                                 
                                 self.user.email = email ?? ""
                                 self.user.socialType = .Kakao
+                                Task{
+                                    let snap = try await db.document(self.user.email).collection("bookmark").getDocuments()
+                                    
+                                    for document in snap.documents{
+                                        self.user.bookmark_list.append(document.documentID)
+                                    }
+                                }
                                 vc.emailTest = email
+                                
                                 vc.user = self.user
                                 db.document("\(email)&kakao").setData([:])
                                 self.defaults.set("\(email)&kakao", forKey: "isAutoLogin")
@@ -98,6 +106,13 @@ class SignInView: UIViewController{
 
                                     self.user.email = email ?? ""
                                     self.user.socialType = .Kakao
+                                    Task{
+                                        let snap = try await db.document(self.user.email).collection("bookmark").getDocuments()
+                                        
+                                        for document in snap.documents{
+                                            self.user.bookmark_list.append(document.documentID)
+                                        }
+                                    }
                                     
                                     vc.user = self.user
                                     vc.emailTest = email
@@ -122,10 +137,30 @@ class SignInView: UIViewController{
             print(check)
             let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
             
+            let db = Firestore.firestore()
+            
             self.user.email = check as! String
+            
+            print(self.user.email)
+            
+            Task{
+                let snap = try await db.collection("users").document(self.user.email).collection("bookmark").getDocuments()
+                
+                for document in snap.documents{
+                    self.user.bookmark_list.append(document.documentID)
+                    print(document.documentID)
+                }
+                try await Task.sleep(for: .seconds(1))
+                
+                vc.emailTest = check as! String
+                vc.user = self.user
+            }
+            
+            
+            
+            print(self.user.bookmark_list)
 
-            vc.emailTest = check as! String
-            vc.user = self.user
+            
             self.navigationController?.pushViewController(vc, animated: false)
             
         }
@@ -202,6 +237,14 @@ extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControll
 //                            self.sendUserModel?.sendUserInfo(user: UserModel(email: decodedBody["email"] as? String ?? "", socialType: SocialType.Apple))
                             let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
                             let db = Firestore.firestore().collection("users")
+                            
+                            Task{
+                                let snap = try await db.document(self.user.email).collection("bookmark").getDocuments()
+                                
+                                for document in snap.documents{
+                                    self.user.bookmark_list.append(document.documentID)
+                                }
+                            }
                             db.document("\(decodedBody["email"])&apple").setData([:])
                             self.user.email = decodedBody["email"] as! String
                             self.user.socialType = .Apple

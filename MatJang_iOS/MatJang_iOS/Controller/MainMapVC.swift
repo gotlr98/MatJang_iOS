@@ -156,6 +156,9 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+
+        
         mapContainer = self.view as? KMViewContainer
 //        self.navigationItem.hidesBackButton = true
         self.navigationController?.isNavigationBarHidden = false
@@ -525,6 +528,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         addObservers()
         _appear = true
         print("view will appear")
+        
         if mapController?.isEnginePrepared == false {
             mapController?.prepareEngine()
         }
@@ -533,19 +537,35 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
             mapController?.activateEngine()
         }
         
+        
+        //            { (snapshot, err) in
+        //                if let err = err{
+        //                    print(err)
+        //                }
+        //                else{
+        //                    guard let snapshot = snapshot else{return}
+        //                    for document in snapshot.documents{
+        //
+        //                        self.user?.bookmark_list.append(document.documentID)
+        //                        self.user?.matjip_list[document.documentID] = document.data() as [Matjip]
+        //                        print("\(document.documentID): \(document.data())")
+        //
+        //                    }
+        //                }
+        //            }
+        
+        
+        
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool){
         Task{
-            await self.db.collection("users").document(self.user!.email).collection("bookmark").getDocuments{ (snapshot, err) in
-                if let err = err{
-                    print(err)
-                }
-                else{
-                    guard let snapshot = snapshot else{return}
-                    for document in snapshot.documents{
-                        
-                        self.user?.bookmark_list.append(document.documentID)
-                        print(document.data())
-                    }
-                }
+            let doc = self.db.collection("users").document(self.user?.email ?? "").collection("bookmark").document(self.user?.bookmark_list[0] ?? "")
+
+            do{
+                let matjip = try await doc.getDocument(as: [Matjip].self)
+                print(matjip)
             }
         }
     }
