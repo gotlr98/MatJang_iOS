@@ -283,6 +283,8 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
     
     func onCameraStopped(_ param: CameraActionEventParam){
         
+
+        
         
         if(dropDown.selectedIndex == 0){
             let mapView = mapController?.getView("mapview") as! KakaoMap
@@ -314,7 +316,27 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         
         let user_email = UserDefaults.standard.string(forKey: "isAutoLogin")
         
-        
+
+        Task{
+            if(self.user?.bookmark_list.count != 0){
+                for i in 0..<(self.user!.bookmark_list.count){
+                    print(self.user?.bookmark_list[i])
+                    let doc = self.db.collection("users").document(self.user?.email ?? "").collection("bookmark").document(self.user?.bookmark_list[i] ?? "")
+
+                    do{
+                        let getData = try await doc.getDocument()
+                        let matjip = getData.data()
+                        for (place_name, data) in matjip!{
+                            print(place_name)
+                        }
+                    }
+                }
+            }
+            else{
+                print("nil")
+            }
+            
+        }
 
         let position = param.poiItem.userObject as! [String]
         for matjip in self.categoryMatjipList{
@@ -559,17 +581,6 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         
     }
     
-    override func viewDidAppear(_ animated: Bool){
-        Task{
-            let doc = self.db.collection("users").document(self.user?.email ?? "").collection("bookmark").document(self.user?.bookmark_list[0] ?? "")
-
-            do{
-                let matjip = try await doc.getDocument(as: [Matjip].self)
-                print(matjip)
-            }
-        }
-    }
-        
     override func viewWillDisappear(_ animated: Bool) {
         _appear = false
         mapController?.pauseEngine()  //렌더링 중지.

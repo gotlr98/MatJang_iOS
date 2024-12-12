@@ -150,7 +150,6 @@ class SignInView: UIViewController{
                     self.user.bookmark_list.append(document.documentID)
                     print(document.documentID)
                 }
-                try await Task.sleep(for: .seconds(1))
                 
                 vc.emailTest = check as! String
                 vc.user = self.user
