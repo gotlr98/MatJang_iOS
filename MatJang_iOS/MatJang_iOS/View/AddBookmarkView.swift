@@ -158,9 +158,34 @@ class AddBookmarkView: UIViewController{
             let user_email = UserDefaults.standard.string(forKey: "isAutoLogin")
             
             let title = self.bookmarkListButton[sender.tag].titleLabel?.text
-            self.db.collection("users").document(user_email ?? "").collection("bookmark").document(title ?? "").setData([
-                self.select_matjip?.place_name ?? "":["x": self.select_matjip?.x, "y": self.select_matjip?.y, "address_name": self.select_matjip?.road_address_name, "category_name": self.select_matjip?.category_name]
-            ], merge: true)
+            
+            Task{
+                await self.db.collection("users").document(user_email ?? "").collection("bookmark").getDocuments{ (snapshot, err) in
+                    if let err = err{
+                        print("error")
+                    }
+                    else{
+                        guard let snapshot = snapshot else{return}
+                        
+                        for document in snapshot.documents{
+                            if(document.documentID == title){
+                                for data in document.data(){
+                                    if(data.key == self.select_matjip?.place_name){
+                                        self.showToast(message: "이미 등록되어있습니다")
+                                        return
+                                    }
+                                }
+                                
+                                self.db.collection("users").document(user_email ?? "").collection("bookmark").document(title ?? "").setData([
+                                    self.select_matjip?.place_name ?? "":["x": self.select_matjip?.x, "y": self.select_matjip?.y, "address_name": self.select_matjip?.road_address_name, "category_name": self.select_matjip?.category_name]
+                                ], merge: true)
+                            }
+                        }
+                    }
+                }
+            }
+            
+            
 
         }
         
