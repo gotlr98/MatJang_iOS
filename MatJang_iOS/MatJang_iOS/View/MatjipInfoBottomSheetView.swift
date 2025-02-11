@@ -56,6 +56,11 @@ class MatjipInfoBottomSheetView: UIViewController{
         self.present(vc, animated: true)
     }
     
+    @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
+        let vc = MatjipReviewView()
+        self.present(vc, animated: true)
+    }
+    
     override func viewDidLoad(){
         
         view.addSubview(place_name)
@@ -67,6 +72,9 @@ class MatjipInfoBottomSheetView: UIViewController{
         
         
         self.view.backgroundColor = .white
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+        self.view.addGestureRecognizer(tap)
         
         place_name.snp.makeConstraints({ make in
             make.top.equalTo(self.view.snp.top).offset(20)

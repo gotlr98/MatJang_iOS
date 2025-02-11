@@ -350,7 +350,9 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
                 }
                 if let sheet = vc.sheetPresentationController{
                     sheet.detents = [fraction]
+                    
                 }
+                
                 self.present(vc, animated: true)
             }
         }

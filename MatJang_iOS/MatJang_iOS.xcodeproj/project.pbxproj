@@ -17,6 +17,7 @@
 		8A16F9982CE57D2600F874D3 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 8A16F9972CE57D2600F874D3 /* FirebaseStorage */; };
 		8A30F4342C647C520005E60B /* main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A30F4332C647C520005E60B /* main.storyboard */; };
 		8A4B8D7D2CD4CF7D00E77A25 /* SearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4B8D7C2CD4CF7D00E77A25 /* SearchResultView.swift */; };
+		8A4E50CB2D5B337000A4EAB9 /* MatjipReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E50CA2D5B337000A4EAB9 /* MatjipReviewView.swift */; };
 		8A4F56FE2CD9C38C001C2BB8 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8A4F56FD2CD9C38C001C2BB8 /* SnapKit */; };
 		8A64FF3C2C57452600CAD716 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A64FF3B2C57452600CAD716 /* AppDelegate.swift */; };
 		8A64FF3E2C57452600CAD716 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A64FF3D2C57452600CAD716 /* SceneDelegate.swift */; };
@@ -50,6 +51,7 @@
 /* Begin PBXFileReference section */
 		8A30F4332C647C520005E60B /* main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = main.storyboard; sourceTree = "<group>"; };
 		8A4B8D7C2CD4CF7D00E77A25 /* SearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultView.swift; sourceTree = "<group>"; };
+		8A4E50CA2D5B337000A4EAB9 /* MatjipReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatjipReviewView.swift; sourceTree = "<group>"; };
 		8A64FF382C57452600CAD716 /* MatJang_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MatJang_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A64FF3B2C57452600CAD716 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8A64FF3D2C57452600CAD716 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				8A9746852CD899A800D7F6DC /* CollectionViewCell.swift */,
 				8A6C52A82CE73A720006154A /* MatjipInfoBottomSheetView.swift */,
 				8A8D2CE02CEF09F0004231CB /* AddBookmarkView.swift */,
+				8A4E50CA2D5B337000A4EAB9 /* MatjipReviewView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -306,6 +309,7 @@
 				8A64FF402C57452600CAD716 /* ViewController.swift in Sources */,
 				8AA04E1A2CB78ADC00BECCCB /* UserModel.swift in Sources */,
 				8AF12D372CB4ED0000C99888 /* SideMenuVC.swift in Sources */,
+				8A4E50CB2D5B337000A4EAB9 /* MatjipReviewView.swift in Sources */,
 				8AA04E1C2CB78D3700BECCCB /* Matjip.swift in Sources */,
 				8A6C52A92CE73A720006154A /* MatjipInfoBottomSheetView.swift in Sources */,
 				8A64FF3C2C57452600CAD716 /* AppDelegate.swift in Sources */,
