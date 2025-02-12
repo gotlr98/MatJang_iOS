@@ -58,6 +58,7 @@ class MatjipInfoBottomSheetView: UIViewController{
     
     @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
         let vc = MatjipReviewView()
+        vc.matjip = self.matjip
         self.present(vc, animated: true)
     }
     
