@@ -33,7 +33,7 @@ class MatjipInfoBottomSheetView: UIViewController{
     }
 
     private lazy var bookmark = UIImageView().then{
-        $0.image = UIImage(systemName: "bookmark.fill")
+//        $0.image = UIImage(systemName: "bookmark.fill")
         $0.tintColor = .gray
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(bookmarkTapped))
@@ -70,6 +70,28 @@ class MatjipInfoBottomSheetView: UIViewController{
         view.addSubview(bookmark)
         
         let db = Firestore.firestore()
+        let user_email = UserDefaults.standard.string(forKey: "isAutoLogin")
+        
+        Task{
+            await db.collection("users").document(user_email ?? "").collection("bookmark").getDocuments{ (snapshot, err) in
+                if let err = err{
+                    print(err)
+                }
+                else{
+                    guard let snapshot = snapshot else{return}
+                    for document in snapshot.documents{
+                        
+                        if(document.documentID == self.matjip?.place_name){
+                            self.bookmark.image = UIImage(systemName: "bookmark.fill")
+                        }
+                        else{
+                            self.bookmark.image = UIImage(systemName: "person.crop.circle.fill.badge.checkmark")
+                        }
+                    }
+                }
+            }
+        }
+        
         
         
         self.view.backgroundColor = .white

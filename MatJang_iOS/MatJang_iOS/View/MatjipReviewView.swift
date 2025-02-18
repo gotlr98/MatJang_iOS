@@ -41,9 +41,10 @@ class MatjipReviewView: UIViewController{
         
         let user_email = UserDefaults.standard.string(forKey: "isAutoLogin")
         
+        
         self.db.collection("users").document(user_email ?? "").collection("review").document(matjip?.place_name ?? "").setData(["rate":rate, "review": review])
         
-        self.db.collection("review").document(matjip?.place_name ?? "").setData(["users": user_email ?? "", "rate": rate, "review": review])
+        self.db.collection("review").document(matjip?.place_name ?? "").setData(["users": user_email ?? "", "rate": rate, "review": review], merge: true)
     }
  
     
