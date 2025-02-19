@@ -320,15 +320,15 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         Task{
             if(self.user?.bookmark_list.count != 0){
                 for i in 0..<(self.user!.bookmark_list.count){
-                    print(self.user?.bookmark_list[i])
                     let doc = self.db.collection("users").document(self.user?.email ?? "").collection("bookmark").document(self.user?.bookmark_list[i] ?? "")
 
                     do{
                         let getData = try await doc.getDocument()
                         let matjip = getData.data()
-                        for (place_name, data) in matjip!{
-                            print(place_name)
-                        }
+//                        for (place_name, data) in matjip!{
+//                            print(place_name)
+//                            
+//                        }
                     }
                 }
             }

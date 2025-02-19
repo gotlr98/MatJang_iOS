@@ -15,6 +15,7 @@ class MatjipInfoBottomSheetView: UIViewController{
     
     var matjip: Matjip?
     var isBookmarked: [String:Bool]?
+    var review: [String:[String:String]]? = [:]
     
     private lazy var place_name = UILabel().then{
         $0.text = matjip?.place_name
@@ -57,9 +58,27 @@ class MatjipInfoBottomSheetView: UIViewController{
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
-        let vc = MatjipReviewView()
-        vc.matjip = self.matjip
-        self.present(vc, animated: true)
+        
+        if (self.review == nil){
+            print("review nil \(self.review)")
+            let vc = MatjipReviewRegisterView()
+            
+            vc.matjip = self.matjip
+            
+            self.present(vc, animated: true)
+        }
+        
+        else{
+            print("not nil \(self.review)")
+            let vc = MatjipReviewView()
+            
+            vc.matjip = self.matjip
+            vc.review = self.review
+            
+            self.present(vc, animated: true)
+            
+        }
+        
     }
     
     override func viewDidLoad(){
@@ -120,5 +139,26 @@ class MatjipInfoBottomSheetView: UIViewController{
             make.width.equalTo(30)
             make.height.equalTo(30)
         })
+        
+        Task{
+            await db.collection("users").document(user_email ?? "").collection("review").getDocuments{ (snapshot, err) in
+                if let err = err{
+                    print(err)
+                }
+                else{
+                    guard let snapshot = snapshot else{return}
+                    for document in snapshot.documents{
+                        
+                        let data = document.data()
+                        self.review?[document.documentID] = ["rate": data["rate"] as? String ?? "", "review": data["review"] as? String ?? ""]
+                        
+                        
+                        print("document.documentID \(document.documentID) rate: \(data["rate"]) review: \(data["review"])")
+                        
+                        print(self.review)
+                    }
+                }
+            }
+        }
     }
 }
