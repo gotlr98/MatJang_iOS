@@ -12,7 +12,7 @@ class SideMenuVC: UIViewController{
     
     private lazy var userButton = UIImageView().then{
         $0.image = UIImage(systemName: "person.crop.circle.badge.plus")
-        $0.tintColor = .white
+        $0.tintColor = .gray
         let tap = UITapGestureRecognizer(target: self, action: #selector(navigateUserPage))
         $0.addGestureRecognizer(tap)
         $0.isUserInteractionEnabled = true
@@ -22,7 +22,7 @@ class SideMenuVC: UIViewController{
     @objc func navigateUserPage(){
         print("tap")
         
-        self.navigationController?.pushViewController(UserDetailView(), animated: false)
+        self.present(UserDetailView(), animated: true)
     }
     
     override func viewDidLoad(){

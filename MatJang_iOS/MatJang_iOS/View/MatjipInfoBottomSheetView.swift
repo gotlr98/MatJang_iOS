@@ -153,9 +153,6 @@ class MatjipInfoBottomSheetView: UIViewController{
                         self.review?[document.documentID] = ["rate": data["rate"] as? String ?? "", "review": data["review"] as? String ?? ""]
                         
                         
-                        print("document.documentID \(document.documentID) rate: \(data["rate"]) review: \(data["review"])")
-                        
-                        print(self.review)
                     }
                 }
             }

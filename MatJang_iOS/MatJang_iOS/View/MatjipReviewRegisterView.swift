@@ -56,8 +56,6 @@ class MatjipReviewRegisterView: UIViewController{
         self.view.addSubview(rate)
         
         rate.translatesAutoresizingMaskIntoConstraints = false
-        rate.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        rate.centerYAnchor.constraint(equalTo: self.view.topAnchor, constant: 20).isActive = true
         
         rate.snp.makeConstraints({make in
             make.centerY.equalTo(self.view.snp.centerY)
