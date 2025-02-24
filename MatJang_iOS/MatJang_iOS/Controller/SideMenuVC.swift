@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SnapKit
 
 class SideMenuVC: UIViewController{
     
@@ -35,7 +36,12 @@ class SideMenuVC: UIViewController{
         
         self.view.addSubview(userButton)
         userButton.translatesAutoresizingMaskIntoConstraints = false
-        userButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 40).isActive = true
-        userButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 50).isActive = true
+        
+        userButton.snp.makeConstraints({ make in
+            make.left.equalTo(self.view.snp.left).offset(40)
+            make.top.equalTo(self.view.snp.top).offset(30)
+            make.width.equalTo(50)
+            make.height.equalTo(50)
+        })
     }
 }
