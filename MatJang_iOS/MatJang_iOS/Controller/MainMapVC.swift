@@ -516,6 +516,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
                 // 애니메이션이 완료된 후 사이드 메뉴를 뷰 계층 구조에서 제거.
                 sideMenuVC.view.removeFromSuperview()
                 sideMenuVC.removeFromParent()
+                self.navigationController?.isNavigationBarHidden = false
                 self.dimmingView?.isHidden = true
             }
         }
@@ -543,6 +544,9 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
             UIView.animate(withDuration: 0.3, animations: {
                 // 사이드 메뉴를 화면에 표시.
                 sideMenuVC.view.frame = CGRect(x: 0, y: yPos, width: menuWidth, height: menuHeight)
+                
+                self.navigationController?.isNavigationBarHidden = true
+                
                 // 어두운 배경 뷰의 투명도를 조절.
                 self.dimmingView?.alpha = 0.5
             })

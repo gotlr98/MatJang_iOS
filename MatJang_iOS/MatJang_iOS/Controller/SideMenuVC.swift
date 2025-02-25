@@ -12,13 +12,15 @@ import SnapKit
 class SideMenuVC: UIViewController{
     
     private lazy var userButton = UIImageView().then{
-        $0.image = UIImage(systemName: "person.crop.circle.badge.plus")
+        $0.image = UIImage(systemName: "person.crop.circle.badge")
         $0.tintColor = .gray
         let tap = UITapGestureRecognizer(target: self, action: #selector(navigateUserPage))
         $0.addGestureRecognizer(tap)
         $0.isUserInteractionEnabled = true
         
     }
+    
+    private lazy var user_email = UILabel()
     
     @objc func navigateUserPage(){
         print("tap")
@@ -38,10 +40,15 @@ class SideMenuVC: UIViewController{
         userButton.translatesAutoresizingMaskIntoConstraints = false
         
         userButton.snp.makeConstraints({ make in
-            make.left.equalTo(self.view.snp.left).offset(40)
-            make.top.equalTo(self.view.snp.top).offset(30)
-            make.width.equalTo(50)
-            make.height.equalTo(50)
+            make.right.equalTo(self.view.snp.right).offset(40)
+            make.top.equalTo(self.view.snp.top).offset(60)
+            make.width.equalTo(30)
+            make.height.equalTo(30)
         })
+        
+        var get_user_email: String = UserDefaults.standard.string(forKey: "isAutoLogin") ?? ""
+        let user_email_text = get_user_email.split(separator: "&").first
+        
+        self.user_email.text = user_email as? String ?? ""
     }
 }
