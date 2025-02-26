@@ -47,8 +47,19 @@ class SideMenuVC: UIViewController{
         })
         
         var get_user_email: String = UserDefaults.standard.string(forKey: "isAutoLogin") ?? ""
-        let user_email_text = get_user_email.split(separator: "&").first
         
-        self.user_email.text = user_email as? String ?? ""
+        if(get_user_email != ""){
+            let user_email_text = get_user_email.split(separator: "&").first
+            
+            let trans_email = user_email_text
+            
+            self.user_email.text = user_email_text as? String ?? ""
+            
+            print(user_email_text)
+        }
+        
+        
+        
+        
     }
 }
