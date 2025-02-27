@@ -11,6 +11,8 @@ import SnapKit
 
 class SideMenuVC: UIViewController{
     
+    var email: String?
+    
     private lazy var userButton = UIImageView().then{
         $0.image = UIImage(systemName: "person.crop.circle.badge")
         $0.tintColor = .gray
@@ -20,7 +22,10 @@ class SideMenuVC: UIViewController{
         
     }
     
-    private lazy var user_email = UILabel()
+    private lazy var user_email = UILabel().then{
+        $0.text = email
+        $0.font = .systemFont(ofSize: 14, weight: .medium)
+    }
     
     @objc func navigateUserPage(){
         print("tap")
@@ -40,25 +45,24 @@ class SideMenuVC: UIViewController{
         userButton.translatesAutoresizingMaskIntoConstraints = false
         
         userButton.snp.makeConstraints({ make in
-            make.right.equalTo(self.view.snp.right).offset(40)
+            make.left.equalTo(self.view.snp.left).offset(40)
             make.top.equalTo(self.view.snp.top).offset(60)
             make.width.equalTo(30)
             make.height.equalTo(30)
         })
         
-        var get_user_email: String = UserDefaults.standard.string(forKey: "isAutoLogin") ?? ""
-        
-        if(get_user_email != ""){
-            let user_email_text = get_user_email.split(separator: "&").first
-            
-            let trans_email = user_email_text
-            
-            self.user_email.text = user_email_text as? String ?? ""
-            
-            print(user_email_text)
-        }
         
         
+        self.view.addSubview(user_email)
+        
+        user_email.translatesAutoresizingMaskIntoConstraints = false
+        user_email.snp.makeConstraints({ make in
+            make.top.equalTo(self.userButton.snp.bottom).offset(50)
+            make.width.equalTo(100)
+            make.height.equalTo(50)
+        })
+        
+        print(self.email)
         
         
     }

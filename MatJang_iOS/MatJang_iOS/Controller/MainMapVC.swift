@@ -524,6 +524,8 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
     @objc private func presentSideMenu() {
             let sideMenuVC = self.sideMenuVC
             
+            var get_user_email: String = UserDefaults.standard.string(forKey: "isAutoLogin") ?? ""
+            sideMenuVC.email = get_user_email.split(separator: "&").first.map(String.init)
             // 사이드 메뉴 뷰 컨트롤러를 자식으로 추가하고 뷰 계층 구조에 추가.
             self.addChild(sideMenuVC)
             self.view.addSubview(sideMenuVC.view)
