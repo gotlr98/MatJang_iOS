@@ -12,6 +12,7 @@ import AuthenticationServices
 import JWTDecode
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import Then
 
 
 protocol UserModelDelegate{
@@ -22,15 +23,17 @@ class SignInView: UIViewController{
     
     let kakaoButton = UIButton()
     let appleButton = ASAuthorizationAppleIDButton(type: .signIn, style: .black)
+    let guestButton = UIButton()
     var sendUserModel: UserModelDelegate?
     let defaults = UserDefaults.standard
+    
+    let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
     
     var user: UserModel = UserModel(email: "", socialType: .Guest)
     
     
     @objc func onPressKakaoButton(_sender: UIButton){
 
-        
             if (UserApi.isKakaoTalkLoginAvailable()) {
                 UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
                     if let error = error {
@@ -42,14 +45,12 @@ class SignInView: UIViewController{
                         //do something
                         var token = oauthToken
                         let db = Firestore.firestore().collection("users")
-                        let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
 
                         
                         UserApi.shared.me(){(user, error) in
                             if let error = error{}
                             else{
                                 var email = user?.kakaoAccount?.email
-                                print("\(email) email here")
                                 //                            self.sendUserModel?.sendUserInfo(user: UserModel(email: email ?? "" , socialType: SocialType.Kakao))
                                 
                                 self.user.email = email ?? ""
@@ -61,14 +62,14 @@ class SignInView: UIViewController{
                                         self.user.bookmark_list.append(document.documentID)
                                     }
                                 }
-                                vc.emailTest = email
+                                self.vc.emailTest = email
                                 
-                                vc.user = self.user
-                                db.document("\(email)&kakao").setData([:])
-                                self.defaults.set("\(email)&kakao", forKey: "isAutoLogin")
+                                self.vc.user = self.user
+                                db.document("\(email ?? "")&kakao").setData([:])
+                                self.defaults.set("\(email ?? "")&kakao", forKey: "isAutoLogin")
                                 
                                 
-                                self.navigationController?.pushViewController(vc, animated: false)
+                                self.navigationController?.pushViewController(self.vc, animated: false)
                             }
                         }
 
@@ -94,7 +95,6 @@ class SignInView: UIViewController{
                             
                             var token = oauthToken
                             let db = Firestore.firestore().collection("users")
-                            let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
 
                             
                             UserApi.shared.me(){(user, error) in
@@ -102,7 +102,6 @@ class SignInView: UIViewController{
                                 else{
                                     var email = user?.kakaoAccount?.email
         //                            self.sendUserModel?.sendUserInfo(user: UserModel(email: email ?? "" , socialType: SocialType.Kakao))
-                                    print("\(email) email here")
 
                                     self.user.email = email ?? ""
                                     self.user.socialType = .Kakao
@@ -114,12 +113,12 @@ class SignInView: UIViewController{
                                         }
                                     }
                                     
-                                    vc.user = self.user
-                                    vc.emailTest = email
-                                    db.document("\(email)&kakao").setData([:])
-                                    self.defaults.set("\(email)&kakao", forKey: "isAutoLogin")
+                                    self.vc.user = self.user
+                                    self.vc.emailTest = email
+                                    db.document("\(email ?? "")&kakao").setData([:])
+                                    self.defaults.set("\(email ?? "")&kakao", forKey: "isAutoLogin")
                                     
-                                    self.navigationController?.pushViewController(vc, animated: false)
+                                    self.navigationController?.pushViewController(self.vc, animated: false)
                                 }
                             }
                             
@@ -132,16 +131,19 @@ class SignInView: UIViewController{
         
     }
     
+    @objc func onPressGuestButton(){
+        self.defaults.set("Guest", forKey: "isAutoLogin")
+        
+        self.navigationController?.pushViewController(self.vc, animated: true)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         if let check = defaults.object(forKey: "isAutoLogin"){
-            print(check)
-            let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
             
             let db = Firestore.firestore()
             
             self.user.email = check as! String
             
-            print(self.user.email)
             
             Task{
                 let snap = try await db.collection("users").document(self.user.email).collection("bookmark").getDocuments()
@@ -151,16 +153,11 @@ class SignInView: UIViewController{
                     print(document.documentID)
                 }
                 
-                vc.emailTest = check as! String
-                vc.user = self.user
+                self.vc.emailTest = check as? String
+                self.vc.user = self.user
             }
             
-            
-            
-            print(self.user.bookmark_list)
-
-            
-            self.navigationController?.pushViewController(vc, animated: false)
+            self.navigationController?.pushViewController(self.vc, animated: false)
             
         }
     }
@@ -171,6 +168,7 @@ class SignInView: UIViewController{
         
         self.view.addSubview(kakaoButton)
         self.view.addSubview(appleButton)
+        self.view.addSubview(guestButton)
         
         kakaoButton.translatesAutoresizingMaskIntoConstraints = false
         kakaoButton.addTarget(self, action: #selector(onPressKakaoButton), for: .touchUpInside)
@@ -179,6 +177,11 @@ class SignInView: UIViewController{
         
         appleButton.translatesAutoresizingMaskIntoConstraints = false
         appleButton.addTarget(self, action: #selector(onPressAppleButton), for: .touchUpInside)
+        
+        guestButton.translatesAutoresizingMaskIntoConstraints = false
+        guestButton.addTarget(self, action: #selector(onPressGuestButton), for: .touchUpInside)
+        guestButton.setTitle("게스트 로그인", for: .normal)
+        
 
         
         NSLayoutConstraint.activate([
@@ -189,7 +192,11 @@ class SignInView: UIViewController{
             appleButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             appleButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 60),
             appleButton.heightAnchor.constraint(equalToConstant: 50),
-            appleButton.widthAnchor.constraint(equalToConstant: 200)
+            appleButton.widthAnchor.constraint(equalToConstant: 200),
+            guestButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            guestButton.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 110),
+            guestButton.heightAnchor.constraint(equalToConstant: 50),
+            guestButton.widthAnchor.constraint(equalToConstant: 200)
         ])
         
         
@@ -234,7 +241,6 @@ extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControll
                             print(decodedBody)
                             print("Decoded email: "+(decodedBody["email"] as? String ?? "n/a")   )
 //                            self.sendUserModel?.sendUserInfo(user: UserModel(email: decodedBody["email"] as? String ?? "", socialType: SocialType.Apple))
-                            let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
                             let db = Firestore.firestore().collection("users")
                             
                             Task{
@@ -244,11 +250,11 @@ extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControll
                                     self.user.bookmark_list.append(document.documentID)
                                 }
                             }
-                            db.document("\(decodedBody["email"])&apple").setData([:])
+                            db.document("\(decodedBody["email"] ?? "")&apple").setData([:])
                             self.user.email = decodedBody["email"] as! String
                             self.user.socialType = .Apple
-                            self.defaults.set("\(decodedBody["email"])&apple", forKey: "isAutoLogin")
-                            self.navigationController?.pushViewController(vc, animated: false)
+                            self.defaults.set("\(decodedBody["email"] ?? "")&apple", forKey: "isAutoLogin")
+                            self.navigationController?.pushViewController(self.vc, animated: false)
                         } catch {
                             print("decoding failed")
                         }
@@ -264,12 +270,10 @@ extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControll
                     print("username: \(username)")
                     print("password: \(password)")
                     
-                    let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
-                    
-                    self.user.email = username ?? ""
+                    self.user.email = username
                     self.user.socialType = .Apple
-                    vc.emailTest = username
-                    self.navigationController?.pushViewController(vc, animated: false)
+                    self.vc.emailTest = username
+                    self.navigationController?.pushViewController(self.vc, animated: false)
                 
                     return
                 

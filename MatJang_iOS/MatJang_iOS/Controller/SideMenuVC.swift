@@ -10,9 +10,7 @@ import UIKit
 import SnapKit
 
 class SideMenuVC: UIViewController{
-    
-    var email: String?
-    
+        
     private lazy var userButton = UIImageView().then{
         $0.image = UIImage(systemName: "person.crop.circle.badge")
         $0.tintColor = .gray
@@ -23,7 +21,6 @@ class SideMenuVC: UIViewController{
     }
     
     private lazy var user_email = UILabel().then{
-        $0.text = email
         $0.font = .systemFont(ofSize: 14, weight: .medium)
     }
     
@@ -51,6 +48,13 @@ class SideMenuVC: UIViewController{
             make.height.equalTo(30)
         })
         
+        var get_user_email: String = UserDefaults.standard.string(forKey: "isAutoLogin") ?? ""
+        let temp = get_user_email.split(separator: "&").first.map(String.init)
+        
+        let conv = temp?.replacingOccurrences(of: "Optional", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "")
+        
+        self.user_email.text = conv
+        
         
         
         self.view.addSubview(user_email)
@@ -58,11 +62,10 @@ class SideMenuVC: UIViewController{
         user_email.translatesAutoresizingMaskIntoConstraints = false
         user_email.snp.makeConstraints({ make in
             make.top.equalTo(self.userButton.snp.bottom).offset(50)
-            make.width.equalTo(100)
+            make.width.equalTo(300)
             make.height.equalTo(50)
         })
         
-        print(self.email)
         
         
     }

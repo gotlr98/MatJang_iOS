@@ -522,37 +522,36 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         }
     
     @objc private func presentSideMenu() {
-            let sideMenuVC = self.sideMenuVC
-            
-            var get_user_email: String = UserDefaults.standard.string(forKey: "isAutoLogin") ?? ""
-            sideMenuVC.email = get_user_email.split(separator: "&").first.map(String.init)
-            // 사이드 메뉴 뷰 컨트롤러를 자식으로 추가하고 뷰 계층 구조에 추가.
-            self.addChild(sideMenuVC)
-            self.view.addSubview(sideMenuVC.view)
-            
-            // 사이드 메뉴의 너비를 화면 너비의 80%로 설정.
-            let menuWidth = self.view.frame.width * 0.65
-            let menuHeight = self.view.frame.height
-            let yPos = (self.view.frame.height / 2) - (menuHeight / 2) // 중앙에 위치하도록 yPos 계산
+        let sideMenuVC = self.sideMenuVC
 
+        
+        // 사이드 메뉴 뷰 컨트롤러를 자식으로 추가하고 뷰 계층 구조에 추가.
+        self.addChild(sideMenuVC)
+        self.view.addSubview(sideMenuVC.view)
+        
+        // 사이드 메뉴의 너비를 화면 너비의 80%로 설정.
+        let menuWidth = self.view.frame.width * 0.65
+        let menuHeight = self.view.frame.height
+        let yPos = (self.view.frame.height / 2) - (menuHeight / 2) // 중앙에 위치하도록 yPos 계산
+
+        
+        // 사이드 메뉴의 시작 위치를 화면 왼쪽 바깥으로 설정.
+        sideMenuVC.view.frame = CGRect(x: -menuWidth, y: yPos, width: menuWidth, height: menuHeight)
+        
+        // 어두운 배경 뷰를 보이게 합니다.
+        self.dimmingView?.isHidden = false
+        self.dimmingView?.alpha = 0
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            // 사이드 메뉴를 화면에 표시.
+            sideMenuVC.view.frame = CGRect(x: 0, y: yPos, width: menuWidth, height: menuHeight)
             
-            // 사이드 메뉴의 시작 위치를 화면 왼쪽 바깥으로 설정.
-            sideMenuVC.view.frame = CGRect(x: -menuWidth, y: yPos, width: menuWidth, height: menuHeight)
+            self.navigationController?.isNavigationBarHidden = true
             
-            // 어두운 배경 뷰를 보이게 합니다.
-            self.dimmingView?.isHidden = false
-            self.dimmingView?.alpha = 0
-            
-            UIView.animate(withDuration: 0.3, animations: {
-                // 사이드 메뉴를 화면에 표시.
-                sideMenuVC.view.frame = CGRect(x: 0, y: yPos, width: menuWidth, height: menuHeight)
-                
-                self.navigationController?.isNavigationBarHidden = true
-                
-                // 어두운 배경 뷰의 투명도를 조절.
-                self.dimmingView?.alpha = 0.5
-            })
-        }
+            // 어두운 배경 뷰의 투명도를 조절.
+            self.dimmingView?.alpha = 0.5
+        })
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         addObservers()
