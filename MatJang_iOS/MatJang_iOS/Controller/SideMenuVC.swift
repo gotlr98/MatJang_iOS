@@ -50,10 +50,9 @@ class SideMenuVC: UIViewController{
         
         var get_user_email: String = UserDefaults.standard.string(forKey: "isAutoLogin") ?? ""
         let temp = get_user_email.split(separator: "&").first.map(String.init)
+
         
-        let conv = temp?.replacingOccurrences(of: "Optional", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "")
-        
-        self.user_email.text = conv
+        self.user_email.text = temp
         
         
         

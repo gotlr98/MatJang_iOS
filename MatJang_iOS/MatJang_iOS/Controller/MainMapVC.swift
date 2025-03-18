@@ -556,7 +556,6 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
     override func viewWillAppear(_ animated: Bool) {
         addObservers()
         _appear = true
-        print("view will appear")
         
         if mapController?.isEnginePrepared == false {
             mapController?.prepareEngine()

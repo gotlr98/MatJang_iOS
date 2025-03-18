@@ -23,11 +23,12 @@ class SignInView: UIViewController{
     
     let kakaoButton = UIButton()
     let appleButton = ASAuthorizationAppleIDButton(type: .signIn, style: .black)
-    let guestButton = UIButton()
     var sendUserModel: UserModelDelegate?
-    let defaults = UserDefaults.standard
     
-    let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
+
+    
+    let defaults = UserDefaults.standard
+
     
     var user: UserModel = UserModel(email: "", socialType: .Guest)
     
@@ -45,6 +46,8 @@ class SignInView: UIViewController{
                         //do something
                         var token = oauthToken
                         let db = Firestore.firestore().collection("users")
+                        
+                        let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
 
                         
                         UserApi.shared.me(){(user, error) in
@@ -62,14 +65,14 @@ class SignInView: UIViewController{
                                         self.user.bookmark_list.append(document.documentID)
                                     }
                                 }
-                                self.vc.emailTest = email
+                                vc.emailTest = email
                                 
-                                self.vc.user = self.user
+                                vc.user = self.user
                                 db.document("\(email ?? "")&kakao").setData([:])
                                 self.defaults.set("\(email ?? "")&kakao", forKey: "isAutoLogin")
                                 
                                 
-                                self.navigationController?.pushViewController(self.vc, animated: false)
+                                self.navigationController?.pushViewController(vc, animated: false)
                             }
                         }
 
@@ -95,6 +98,8 @@ class SignInView: UIViewController{
                             
                             var token = oauthToken
                             let db = Firestore.firestore().collection("users")
+                            
+                            let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
 
                             
                             UserApi.shared.me(){(user, error) in
@@ -113,12 +118,12 @@ class SignInView: UIViewController{
                                         }
                                     }
                                     
-                                    self.vc.user = self.user
-                                    self.vc.emailTest = email
+                                    vc.user = self.user
+                                    vc.emailTest = email
                                     db.document("\(email ?? "")&kakao").setData([:])
                                     self.defaults.set("\(email ?? "")&kakao", forKey: "isAutoLogin")
                                     
-                                    self.navigationController?.pushViewController(self.vc, animated: false)
+                                    self.navigationController?.pushViewController(vc, animated: false)
                                 }
                             }
                             
@@ -134,7 +139,18 @@ class SignInView: UIViewController{
     @objc func onPressGuestButton(){
         self.defaults.set("Guest", forKey: "isAutoLogin")
         
-        self.navigationController?.pushViewController(self.vc, animated: true)
+        self.user.email = "Guest"
+        self.user.socialType = .Guest
+        
+        let db = Firestore.firestore().collection("users")
+        
+        let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
+        
+        vc.user = self.user
+        vc.emailTest = "Guest"
+        db.document("Guest").setData([:])
+        
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -143,6 +159,8 @@ class SignInView: UIViewController{
             let db = Firestore.firestore()
             
             self.user.email = check as! String
+            
+            let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
             
             
             Task{
@@ -153,11 +171,11 @@ class SignInView: UIViewController{
                     print(document.documentID)
                 }
                 
-                self.vc.emailTest = check as? String
-                self.vc.user = self.user
+                vc.emailTest = check as? String
+                vc.user = self.user
             }
             
-            self.navigationController?.pushViewController(self.vc, animated: false)
+            self.navigationController?.pushViewController(vc, animated: false)
             
         }
     }
@@ -168,6 +186,11 @@ class SignInView: UIViewController{
         
         self.view.addSubview(kakaoButton)
         self.view.addSubview(appleButton)
+        
+        var config = UIButton.Configuration.plain()
+        config.title = "게스트 로그인"
+        
+        let guestButton = UIButton(configuration: config)
         self.view.addSubview(guestButton)
         
         kakaoButton.translatesAutoresizingMaskIntoConstraints = false
@@ -180,7 +203,6 @@ class SignInView: UIViewController{
         
         guestButton.translatesAutoresizingMaskIntoConstraints = false
         guestButton.addTarget(self, action: #selector(onPressGuestButton), for: .touchUpInside)
-        guestButton.setTitle("게스트 로그인", for: .normal)
         
 
         
@@ -225,11 +247,13 @@ extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControll
         }
 
         func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+            
+            let vc = UIStoryboard(name: "main", bundle: Bundle(for: MainMapViewController.self)).instantiateViewController(withIdentifier: "MainMapVC") as! MainMapViewController
         //로그인 성공
             switch authorization.credential {
                 case let appleIDCredential as ASAuthorizationAppleIDCredential:
                 // You can create an account in your system.
-
+                    
                 
                     if  let authorizationCode = appleIDCredential.authorizationCode,
                         let identityToken = appleIDCredential.identityToken,
@@ -243,6 +267,8 @@ extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControll
 //                            self.sendUserModel?.sendUserInfo(user: UserModel(email: decodedBody["email"] as? String ?? "", socialType: SocialType.Apple))
                             let db = Firestore.firestore().collection("users")
                             
+                            
+                            
                             Task{
                                 let snap = try await db.document(self.user.email).collection("bookmark").getDocuments()
                                 
@@ -254,7 +280,7 @@ extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControll
                             self.user.email = decodedBody["email"] as! String
                             self.user.socialType = .Apple
                             self.defaults.set("\(decodedBody["email"] ?? "")&apple", forKey: "isAutoLogin")
-                            self.navigationController?.pushViewController(self.vc, animated: false)
+                            self.navigationController?.pushViewController(vc, animated: false)
                         } catch {
                             print("decoding failed")
                         }
@@ -272,8 +298,8 @@ extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControll
                     
                     self.user.email = username
                     self.user.socialType = .Apple
-                    self.vc.emailTest = username
-                    self.navigationController?.pushViewController(self.vc, animated: false)
+                    vc.emailTest = username
+                    self.navigationController?.pushViewController(vc, animated: false)
                 
                     return
                 
