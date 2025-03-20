@@ -280,6 +280,8 @@ extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControll
                             self.user.email = decodedBody["email"] as! String
                             self.user.socialType = .Apple
                             self.defaults.set("\(decodedBody["email"] ?? "")&apple", forKey: "isAutoLogin")
+                            vc.user = self.user
+                            vc.emailTest = decodedBody["email"] as! String
                             self.navigationController?.pushViewController(vc, animated: false)
                         } catch {
                             print("decoding failed")
@@ -298,6 +300,7 @@ extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControll
                     
                     self.user.email = username
                     self.user.socialType = .Apple
+                    vc.user = self.user
                     vc.emailTest = username
                     self.navigationController?.pushViewController(vc, animated: false)
                 

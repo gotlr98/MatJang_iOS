@@ -157,7 +157,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         
         super.viewDidLoad()
         
-
+        print(self.user?.email ?? "empty")
         
         mapContainer = self.view as? KMViewContainer
 //        self.navigationItem.hidesBackButton = true
@@ -318,7 +318,7 @@ class MainMapViewController: UIViewController, MapControllerDelegate, getSelecte
         
 
         Task{
-            if(self.user?.bookmark_list.count != 0){
+            if(self.user?.bookmark_list.count != nil){
                 for i in 0..<(self.user!.bookmark_list.count){
                     let doc = self.db.collection("users").document(self.user?.email ?? "").collection("bookmark").document(self.user?.bookmark_list[i] ?? "")
 

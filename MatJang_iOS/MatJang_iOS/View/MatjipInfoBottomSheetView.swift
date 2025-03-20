@@ -91,6 +91,8 @@ class MatjipInfoBottomSheetView: UIViewController{
         let db = Firestore.firestore()
         let user_email = UserDefaults.standard.string(forKey: "isAutoLogin")
         
+        var count = 0
+        
         Task{
             await db.collection("users").document(user_email ?? "").collection("bookmark").getDocuments{ (snapshot, err) in
                 if let err = err{
@@ -101,6 +103,7 @@ class MatjipInfoBottomSheetView: UIViewController{
                     for document in snapshot.documents{
                         
                         if(document.documentID == self.matjip?.place_name){
+                            
                             self.bookmark.image = UIImage(systemName: "bookmark.fill")
                         }
                         else{
@@ -108,7 +111,12 @@ class MatjipInfoBottomSheetView: UIViewController{
                         }
                     }
                 }
+                count += 1
             }
+        }
+        
+        if (count == 0){
+            self.bookmark.image = UIImage(systemName: "bookmark.fill")
         }
         
         
